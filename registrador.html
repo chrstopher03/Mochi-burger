@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MOCHI BURGERS</title>
+  <link rel="icon" href="1.jpeg">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:#050505;
+  color:white;
+}
+
+.card{
+  background:#101010;
+  border:1px solid #272727;
+  border-radius:28px;
+}
+
+.btn{
+  transition:.3s;
+}
+
+.btn:hover{
+  transform:translateY(-4px);
+}
+
+table{
+  width:100%;
+}
+
+th,
+td{
+  padding:15px;
+  text-align:left;
+}
+
+th{
+  background:#181818;
+}
+
+tr:nth-child(even){
+  background:#0f0f0f;
+}
+
+</style>
+
+</head>
+
+<body class="p-6">
+
+<div class="max-w-7xl mx-auto">
+
+  <!-- HEADER -->
+
+  <div class="mb-8 text-center">
+
+    <img
+      src="1.jpeg"
+      class="w-40 h-40 object-contain mx-auto mb-5 rounded-full">
+
+    <h1 class="text-6xl font-black bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+      MOCHI BURGERS
+    </h1>
+
+    <p class="text-zinc-400 mt-3 text-xl">
+      Sistema Premium de Facturación
+    </p>
+
+  </div>
+
+  <!-- GRID -->
+
+  <div class="grid lg:grid-cols-3 gap-6">
+
+    <!-- INVENTARIO -->
+
+    <div class="lg:col-span-2 card p-6">
+
+      <div class="flex justify-between items-center mb-6">
+
+        <h2 class="text-3xl font-black text-orange-400">
+          Inventario
+        </h2>
+
+        <button
+          onclick="openInventoryModal()"
+          class="btn bg-orange-500 hover:bg-orange-600 px-5 py-3 rounded-2xl font-bold">
+
+          + Agregar Ingrediente
+
+        </button>
+
+      </div>
+
+      <div class="overflow-auto">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Ingrediente</th>
+              <th>Cantidad</th>
+              <th>Unidad</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="inventoryTable"></tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="card p-6">
+
+      <h2 class="text-3xl font-black text-green-400 mb-6">
+        Ventas
+      </h2>
+
+      <div class="space-y-5">
+
+        <div class="bg-zinc-900 rounded-2xl p-5">
+
+          <p class="text-zinc-400">
+            Total Ventas
+          </p>
+
+          <h1
+            id="salesAmount"
+            class="text-4xl font-black text-green-400 mt-2">
+
+            C$0
+
+          </h1>
+
+        </div>
+
+        <div class="bg-zinc-900 rounded-2xl p-5">
+
+          <p class="text-zinc-400">
+            Facturas
+          </p>
+
+          <h1
+            id="invoiceCount"
+            class="text-4xl font-black text-orange-400 mt-2">
+
+            0
+
+          </h1>
+
+        </div>
+
+      </div>
+
+      <canvas id="salesChart" class="mt-8"></canvas>
+
+    </div>
+
+  </div>
+
+  <!-- FACTURADOR -->
+
+  <div class="card p-6 mt-6">
+
+    <div class="flex justify-between items-center mb-6">
+
+      <h2 class="text-3xl font-black text-yellow-400">
+        Facturador
+      </h2>
+
+      <button
+        onclick="addProductRow()"
+        class="btn bg-green-500 hover:bg-green-600 px-5 py-3 rounded-2xl font-bold">
+
+        + Producto
+
+      </button>
+
+    </div>
+
+    <!-- DATOS -->
+
+    <div class="grid md:grid-cols-3 gap-4 mb-6">
+
+      <input
+        id="clientName"
+        type="text"
+        value="Christopher"
+        class="bg-zinc-900 border border-zinc-700 rounded-2xl p-4">
+
+      <input
+        id="clientPhone"
+        type="text"
+        placeholder="Teléfono"
+        class="bg-zinc-900 border border-zinc-700 rounded-2xl p-4">
+
+      <input
+        id="invoiceDate"
+        type="date"
+        class="bg-zinc-900 border border-zinc-700 rounded-2xl p-4">
+
+    </div>
+
+    <!-- TABLA -->
+
+    <div class="overflow-auto">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Subtotal</th>
+            <th></th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="invoiceProducts"></tbody>
+
+      </table>
+
+    </div>
+
+    <!-- TOTAL -->
+
+    <div class="flex justify-end mt-6">
+
+      <div class="bg-zinc-900 rounded-2xl p-6 w-full max-w-sm">
+
+        <div class="flex justify-between text-2xl font-black">
+
+          <span>Total:</span>
+
+          <span id="invoiceTotal" class="text-green-400">
+            C$0
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- BOTONES -->
+
+    <div class="flex flex-wrap gap-4 mt-6">
+
+      <button
+        onclick="saveInvoice()"
+        class="btn bg-orange-500 hover:bg-orange-600 px-6 py-4 rounded-2xl font-black">
+
+        Guardar Factura
+
+      </button>
+
+      <button
+        onclick="downloadPDF()"
+        class="btn bg-red-500 hover:bg-red-600 px-6 py-4 rounded-2xl font-black">
+
+        Descargar PDF
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- PRODUCTOS VENDIDOS -->
+
+  <div class="card p-6 mt-6">
+
+    <h2 class="text-3xl font-black text-cyan-400 mb-6">
+      Productos Vendidos
+    </h2>
+
+    <div id="soldProducts" class="space-y-4"></div>
+
+  </div>
+
+</div>
+
+<!-- MODAL -->
+
+<div
+  id="inventoryModal"
+  class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4">
+
+  <div class="card p-6 w-full max-w-lg">
+
+    <h2 class="text-3xl font-black text-orange-400 mb-6">
+      Agregar Ingrediente
+    </h2>
+
+    <div class="space-y-4">
+
+      <input
+        id="ingredientName"
+        type="text"
+        placeholder="Ingrediente"
+        class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4">
+
+      <input
+        id="ingredientQty"
+        type="number"
+        placeholder="Cantidad"
+        class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4">
+
+      <select
+        id="ingredientUnit"
+        class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4">
+
+        <option>Unidades</option>
+        <option>Kilos</option>
+        <option>Litros</option>
+
+      </select>
+
+    </div>
+
+    <div class="flex gap-4 mt-6">
+
+      <button
+        onclick="closeInventoryModal()"
+        class="flex-1 bg-zinc-700 py-3 rounded-2xl font-bold">
+
+        Cancelar
+
+      </button>
+
+      <button
+        onclick="addIngredient()"
+        class="flex-1 bg-green-500 py-3 rounded-2xl font-bold">
+
+        Guardar
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+<div class="bg-zinc-900 rounded-3xl p-6 mt-10">
+
+  <h1 class="text-3xl font-black mb-6 text-orange-400">
+    Ventas por Día
+  </h1>
+
+  <div class="flex flex-col md:flex-row gap-4">
+
+    <input
+      type="date"
+      id="salesDate"
+      class="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 w-full">
+
+    <button
+      onclick="filterSalesByDate()"
+      class="bg-orange-500 hover:bg-orange-600 px-6 py-4 rounded-2xl font-black">
+
+      Filtrar Ventas
+
+    </button>
+
+  </div>
+
+  <div
+    id="filteredSales"
+    class="mt-6 space-y-4">
+
+  </div>
+
+</div>
+<!-- PON ESTO ARRIBA DE TU SCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+/* =========================
+ALERTAS BONITAS
+========================= */
+
+function showSuccess(message){
+
+  Swal.fire({
+
+    icon:'success',
+
+    title:'Éxito',
+
+    text:message,
+
+    background:'#18181b',
+
+    color:'#fff',
+
+    confirmButtonColor:'#f97316',
+
+    confirmButtonText:'Aceptar'
+
+  });
+
+}
+
+function showError(message){
+
+  Swal.fire({
+
+    icon:'error',
+
+    title:'Error',
+
+    text:message,
+
+    background:'#18181b',
+
+    color:'#fff',
+
+    confirmButtonColor:'#ef4444',
+
+    confirmButtonText:'Cerrar'
+
+  });
+
+}
+
+function showWarning(message){
+
+  Swal.fire({
+
+    icon:'warning',
+
+    title:'Aviso',
+
+    text:message,
+
+    background:'#18181b',
+
+    color:'#fff',
+
+    confirmButtonColor:'#f59e0b',
+
+    confirmButtonText:'Entendido'
+
+  });
+
+}
+
+/* =========================
+DATA
+========================= */
+
+const productList = [
+
+  {
+    name:'Hamburguesa Clásica',
+    price:180
+  },
+
+  {
+    name:'Hamburguesa Doble',
+    price:260
+  },
+
+  {
+    name:'Pizza Familiar',
+    price:480
+  },
+
+  {
+    name:'Pizza Personal',
+    price:220
+  },
+
+  {
+    name:'Coca Cola',
+    price:45
+  },
+
+  {
+    name:'Papas Fritas',
+    price:90
+  },
+
+  {
+    name:'Hot Dog',
+    price:110
+  }
+
+];
+
+let inventory =
+  JSON.parse(localStorage.getItem('inventory')) || [];
+
+let invoices =
+  JSON.parse(localStorage.getItem('invoices')) || [];
+
+let salesData =
+  JSON.parse(localStorage.getItem('salesData')) || [];
+
+const inventoryTable =
+  document.getElementById('inventoryTable');
+
+const invoiceProducts =
+  document.getElementById('invoiceProducts');
+
+const invoiceTotal =
+  document.getElementById('invoiceTotal');
+
+const salesAmount =
+  document.getElementById('salesAmount');
+
+const invoiceCount =
+  document.getElementById('invoiceCount');
+
+/* =========================
+MODAL
+========================= */
+
+function openInventoryModal(){
+
+  document
+    .getElementById('inventoryModal')
+    .classList.remove('hidden');
+
+  document
+    .getElementById('inventoryModal')
+    .classList.add('flex');
+
+}
+
+function closeInventoryModal(){
+
+  document
+    .getElementById('inventoryModal')
+    .classList.add('hidden');
+
+  document
+    .getElementById('inventoryModal')
+    .classList.remove('flex');
+
+}
+
+/* =========================
+INVENTARIO
+========================= */
+
+function addIngredient(){
+
+  const name =
+    document.getElementById('ingredientName').value;
+
+  const qty =
+    Number(
+      document.getElementById('ingredientQty').value
+    );
+
+  const unit =
+    document.getElementById('ingredientUnit').value;
+
+  if(name.trim() === ''){
+
+    showError('Ingrese nombre');
+
+    return;
+
+  }
+
+  inventory.push({
+    id:Date.now(),
+    name,
+    qty,
+    unit
+  });
+
+  localStorage.setItem(
+    'inventory',
+    JSON.stringify(inventory)
+  );
+
+  renderInventory();
+
+  closeInventoryModal();
+
+  showSuccess('Ingrediente agregado');
+
+  document.getElementById('ingredientName').value = '';
+  document.getElementById('ingredientQty').value = '';
+  document.getElementById('ingredientUnit').value = '';
+
+}
+
+function renderInventory(){
+
+  inventoryTable.innerHTML = '';
+
+  inventory.forEach(item => {
+
+    inventoryTable.innerHTML += `
+
+      <tr>
+
+        <td>${item.name}</td>
+
+        <td>${item.qty}</td>
+
+        <td>${item.unit}</td>
+
+        <td class="${
+          item.qty <= 5
+          ? 'text-red-400'
+          : 'text-green-400'
+        } font-bold">
+
+          ${
+            item.qty <= 5
+            ? 'Bajo'
+            : 'Bien'
+          }
+
+        </td>
+
+        <td>
+
+          <button
+            onclick="deleteIngredient(${item.id})"
+            class="bg-red-500 px-4 py-2 rounded-xl">
+
+            Eliminar
+
+          </button>
+
+        </td>
+
+      </tr>
+
+    `;
+
+  });
+
+}
+
+function deleteIngredient(id){
+
+  Swal.fire({
+
+    title:'¿Eliminar ingrediente?',
+
+    icon:'warning',
+
+    background:'#18181b',
+
+    color:'#fff',
+
+    showCancelButton:true,
+
+    confirmButtonColor:'#ef4444',
+
+    cancelButtonColor:'#3f3f46',
+
+    confirmButtonText:'Eliminar',
+
+    cancelButtonText:'Cancelar'
+
+  }).then((result)=>{
+
+    if(result.isConfirmed){
+
+      inventory =
+        inventory.filter(item => item.id !== id);
+
+      localStorage.setItem(
+        'inventory',
+        JSON.stringify(inventory)
+      );
+
+      renderInventory();
+
+      showSuccess('Ingrediente eliminado');
+
+    }
+
+  });
+
+}
+
+/* =========================
+FACTURA
+========================= */
+
+function addProductRow(){
+
+  let options = '';
+
+  productList.forEach(product => {
+
+    options += `
+      <option
+        value="${product.name}"
+        data-price="${product.price}">
+
+        ${product.name} - C$${product.price}
+
+      </option>
+    `;
+
+  });
+
+  const tr = document.createElement('tr');
+
+  tr.innerHTML = `
+
+    <td class="p-2">
+
+      <select
+        class="productSelect bg-zinc-900 border border-zinc-700 rounded-xl p-3 w-full">
+
+        ${options}
+
+      </select>
+
+    </td>
+
+    <td class="p-2">
+
+      <input
+        type="number"
+        value="1"
+        min="1"
+        class="productQty bg-zinc-900 border border-zinc-700 rounded-xl p-3 w-full">
+
+    </td>
+
+    <td class="p-2">
+
+      <input
+        type="number"
+        class="productPrice bg-zinc-900 border border-zinc-700 rounded-xl p-3 w-full"
+        readonly>
+
+    </td>
+
+    <td class="subtotal text-green-400 font-black p-2">
+      C$0
+    </td>
+
+    <td class="p-2">
+
+      <button
+        onclick="removeRow(this)"
+        class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-xl">
+
+        X
+
+      </button>
+
+    </td>
+
+  `;
+
+  invoiceProducts.appendChild(tr);
+
+  const select =
+    tr.querySelector('.productSelect');
+
+  const priceInput =
+    tr.querySelector('.productPrice');
+
+  priceInput.value =
+    select.options[select.selectedIndex].dataset.price;
+
+  calculateTotal();
+
+}
+
+function updateProductPrices(){
+
+  document.querySelectorAll('#invoiceProducts tr')
+  .forEach(row => {
+
+    const select =
+      row.querySelector('.productSelect');
+
+    const priceInput =
+      row.querySelector('.productPrice');
+
+    const selected =
+      select.options[select.selectedIndex];
+
+    priceInput.value =
+      selected.dataset.price;
+
+  });
+
+}
+
+function removeRow(button){
+
+  button.parentElement.parentElement.remove();
+
+  calculateTotal();
+
+}
+
+function calculateTotal(){
+
+  let total = 0;
+
+  document.querySelectorAll('#invoiceProducts tr')
+  .forEach(row => {
+
+    const qty =
+      Number(
+        row.querySelector('.productQty').value
+      );
+
+    const price =
+      Number(
+        row.querySelector('.productPrice').value
+      );
+
+    const subtotal =
+      qty * price;
+
+    row.querySelector('.subtotal').textContent =
+      `C$${subtotal}`;
+
+    total += subtotal;
+
+  });
+
+  invoiceTotal.textContent =
+    `C$${total}`;
+
+}
+
+/* =========================
+GUARDAR FACTURA
+========================= */
+
+let savingInvoice = false;
+
+function saveInvoice(){
+
+  if(savingInvoice){
+    return;
+  }
+
+  savingInvoice = true;
+
+  const rows =
+    document.querySelectorAll('#invoiceProducts tr');
+
+  if(rows.length === 0){
+
+    savingInvoice = false;
+
+    showWarning('Agrega productos');
+
+    return;
+
+  }
+
+  const seller =
+    document.getElementById('clientName').value;
+
+  if(seller.trim() === ''){
+
+    savingInvoice = false;
+
+    showError('Ingrese nombre del vendedor');
+
+    return;
+
+  }
+
+  const products = [];
+
+  let total = 0;
+
+  rows.forEach(row => {
+
+    const name =
+      row.querySelector('.productSelect').value;
+
+    const qty =
+      Number(
+        row.querySelector('.productQty').value
+      );
+
+    const price =
+      Number(
+        row.querySelector('.productPrice').value
+      );
+
+    const subtotal =
+      qty * price;
+
+    total += subtotal;
+
+    products.push({
+      name,
+      qty,
+      price,
+      subtotal
+    });
+
+  });
+
+  const invoice = {
+
+    id:'FAC-' + Date.now(),
+
+    seller:seller,
+
+    total:`C$${total}`,
+
+    numericTotal:total,
+
+    date:new Date().toLocaleString(),
+
+    products
+
+  };
+
+  invoices.push(invoice);
+
+  localStorage.setItem(
+    'invoices',
+    JSON.stringify(invoices)
+  );
+
+  salesData.push(total);
+
+  localStorage.setItem(
+    'salesData',
+    JSON.stringify(salesData)
+  );
+
+  renderSoldProducts();
+
+  updateStats();
+
+  updateChart();
+
+  showSuccess('Factura guardada correctamente');
+
+  invoiceProducts.innerHTML = '';
+
+  addProductRow();
+
+  calculateTotal();
+
+  document.getElementById('clientName').value = '';
+
+  setTimeout(() => {
+
+    savingInvoice = false;
+
+  }, 1000);
+
+}
+
+/* =========================
+ELIMINAR FACTURA
+========================= */
+
+function deleteInvoice(id){
+
+  const invoice =
+    invoices.find(item => item.id === id);
+
+  if(!invoice){
+    return;
+  }
+
+  Swal.fire({
+
+    title:'¿Eliminar factura?',
+
+    text:'Esta acción no se puede deshacer',
+
+    icon:'warning',
+
+    background:'#18181b',
+
+    color:'#fff',
+
+    showCancelButton:true,
+
+    confirmButtonColor:'#ef4444',
+
+    cancelButtonColor:'#3f3f46',
+
+    confirmButtonText:'Eliminar',
+
+    cancelButtonText:'Cancelar'
+
+  }).then((result)=>{
+
+    if(result.isConfirmed){
+
+      invoices =
+        invoices.filter(item => item.id !== id);
+
+      localStorage.setItem(
+        'invoices',
+        JSON.stringify(invoices)
+      );
+
+      const totalToRemove =
+        invoice.numericTotal ||
+        Number(invoice.total.replace('C$',''));
+
+      const index =
+        salesData.indexOf(totalToRemove);
+
+      if(index > -1){
+
+        salesData.splice(index,1);
+
+      }
+
+      localStorage.setItem(
+        'salesData',
+        JSON.stringify(salesData)
+      );
+
+      renderSoldProducts();
+
+      updateStats();
+
+      updateChart();
+
+      showSuccess('Factura eliminada');
+
+    }
+
+  });
+
+}
+
+/* =========================
+PRODUCTOS VENDIDOS
+========================= */
+
+function renderSoldProducts(){
+
+  const container =
+    document.getElementById('soldProducts');
+
+  container.innerHTML = '';
+
+  [...invoices].reverse().forEach(invoice => {
+
+    let items = '';
+
+    invoice.products.forEach(product => {
+
+      items += `
+        <p>
+          • ${product.name}
+          x${product.qty}
+        </p>
+      `;
+
+    });
+
+    container.innerHTML += `
+
+      <div class="bg-zinc-900 rounded-2xl p-5">
+
+        <div class="flex justify-between items-start gap-4">
+
+          <div>
+
+            <h1 class="text-xl font-black text-orange-400">
+              ${invoice.id}
+            </h1>
+
+            <p class="text-zinc-400 mt-2">
+              Vendedor:
+              ${invoice.seller}
+            </p>
+
+            <p class="text-zinc-500">
+              ${invoice.date}
+            </p>
+
+          </div>
+
+          <button
+            onclick="deleteInvoice('${invoice.id}')"
+            class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-xl font-bold">
+
+            Eliminar
+
+          </button>
+
+        </div>
+
+        <div class="mt-4 space-y-2">
+          ${items}
+        </div>
+
+        <h2 class="text-2xl font-black text-green-400 mt-4">
+          ${invoice.total}
+        </h2>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+/* =========================
+PDF
+========================= */
+
+async function downloadPDF(){
+
+  const rows =
+    document.querySelectorAll('#invoiceProducts tr');
+
+  if(rows.length === 0){
+
+    showWarning('Agrega productos');
+
+    return;
+
+  }
+
+  const { jsPDF } = window.jspdf;
+
+  const doc = new jsPDF();
+
+  const now = new Date();
+
+  const seller =
+    document.getElementById('clientName').value || 'Sin vendedor';
+
+  const invoiceNumber =
+    'FAC-' + Date.now();
+
+  let total = 0;
+
+  doc.setFillColor(255,255,255);
+
+  doc.rect(0,0,210,300,'F');
+
+  try{
+
+    doc.addImage(
+      '1.jpeg',
+      'JPEG',
+      65,
+      10,
+      80,
+      50
+    );
+
+  }catch(e){}
+
+  doc.setFontSize(28);
+
+  doc.text(
+    'MOCHI BURGERS',
+    105,
+    75,
+    { align:'center' }
+  );
+
+  doc.setFontSize(18);
+
+  doc.text(
+    'Factura de Venta',
+    105,
+    88,
+    { align:'center' }
+  );
+
+  doc.setFontSize(15);
+
+  doc.text(
+    `Factura: ${invoiceNumber}`,
+    20,
+    115
+  );
+
+  doc.text(
+    `Fecha: ${now.toLocaleDateString()}`,
+    20,
+    128
+  );
+
+  doc.text(
+    `Hora: ${now.toLocaleTimeString()}`,
+    20,
+    141
+  );
+
+  doc.text(
+    `Vendedor: ${seller}`,
+    20,
+    154
+  );
+
+  doc.line(20,170,190,170);
+
+  doc.text('Producto',20,183);
+
+  doc.text('Cant',105,183);
+
+  doc.text('Total',165,183);
+
+  doc.line(20,190,190,190);
+
+  let y = 205;
+
+  rows.forEach(row => {
+
+    const product =
+      row.querySelector('.productSelect').value;
+
+    const qty =
+      Number(
+        row.querySelector('.productQty').value
+      );
+
+    const price =
+      Number(
+        row.querySelector('.productPrice').value
+      );
+
+    const subtotal =
+      qty * price;
+
+    total += subtotal;
+
+    doc.text(product,20,y);
+
+    doc.text(String(qty),110,y);
+
+    doc.text(`C$${subtotal}`,160,y);
+
+    y += 15;
+
+  });
+
+  doc.line(20,y,190,y);
+
+  doc.setFontSize(24);
+
+  doc.text(
+    `TOTAL: C$${total}`,
+    20,
+    y + 20
+  );
+
+  doc.setFontSize(16);
+
+  doc.text(
+    'Gracias por su compra',
+    105,
+    y + 50,
+    { align:'center' }
+  );
+
+  doc.text(
+    'MOCHI BURGERS',
+    105,
+    y + 60,
+    { align:'center' }
+  );
+
+  doc.save('factura-mochi-burgers.pdf');
+
+  showSuccess('PDF descargado');
+
+}
+
+/* =========================
+STATS
+========================= */
+
+function updateStats(){
+
+  let total = 0;
+
+  invoices.forEach(invoice => {
+
+    total += Number(
+      invoice.total.replace('C$','')
+    );
+
+  });
+
+  salesAmount.textContent =
+    `C$${total}`;
+
+  invoiceCount.textContent =
+    invoices.length;
+
+}
+
+/* =========================
+CHART
+========================= */
+
+let chart;
+
+function updateChart(){
+
+  const ctx =
+    document.getElementById('salesChart');
+
+  if(chart){
+
+    chart.destroy();
+
+  }
+
+  chart = new Chart(ctx, {
+
+    type:'bar',
+
+    data:{
+
+      labels:
+        salesData.map((_,i)=>`Venta ${i+1}`),
+
+      datasets:[{
+
+        label:'Ventas',
+
+        data:salesData,
+
+        backgroundColor:'#f97316'
+
+      }]
+
+    },
+
+    options:{
+
+      plugins:{
+        legend:{
+          labels:{
+            color:'white'
+          }
+        }
+      },
+
+      scales:{
+
+        x:{
+          ticks:{
+            color:'white'
+          }
+        },
+
+        y:{
+          ticks:{
+            color:'white'
+          }
+        }
+
+      }
+
+    }
+
+  });
+
+}
+
+/* =========================
+EVENTOS
+========================= */
+
+document.addEventListener('input', e => {
+
+  if(
+    e.target.classList.contains('productQty')
+  ){
+
+    calculateTotal();
+
+  }
+
+});
+
+document.addEventListener('change', e => {
+
+  if(
+    e.target.classList.contains('productSelect')
+  ){
+
+    updateProductPrices();
+
+    calculateTotal();
+
+  }
+
+});
+
+/* =========================
+INIT
+========================= */
+
+renderInventory();
+
+updateStats();
+
+updateChart();
+
+renderSoldProducts();
+
+addProductRow();
+
+</script>
+
+</body>
+</html>

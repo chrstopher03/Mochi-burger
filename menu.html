@@ -1,0 +1,473 @@
+# menu.html
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Burger Premium</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- CSS PREMIUM -->
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --primary:#ff5a1f;
+      --secondary:#ffb800;
+      --dark:#050505;
+      --card:rgba(15,15,15,.78);
+      --glass:rgba(255,255,255,.06);
+
+      --success:#22c55e;
+      --danger:#ef4444;
+
+      --shadow:
+        0 20px 60px rgba(0,0,0,.45);
+
+      --orange-glow:
+        0 0 25px rgba(255,90,31,.35);
+
+      --radius:28px;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Poppins',sans-serif;
+      color:white;
+      overflow-x:hidden;
+      min-height:100vh;
+
+      background:
+        radial-gradient(circle at top left,
+          rgba(255,90,31,.22),
+          transparent 25%),
+
+        radial-gradient(circle at top right,
+          rgba(255,184,0,.16),
+          transparent 30%),
+
+        radial-gradient(circle at bottom,
+          rgba(255,255,255,.03),
+          transparent 30%),
+
+        linear-gradient(to bottom,
+          #020202,
+          #0b1120,
+          #101826);
+
+      position:relative;
+    }
+
+    .navbar{
+      position:sticky;
+      top:0;
+      z-index:999;
+
+      backdrop-filter:blur(20px);
+
+      background:
+        linear-gradient(to right,
+          rgba(0,0,0,.75),
+          rgba(15,15,15,.6));
+
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .glass{
+      background:
+        linear-gradient(to bottom,
+          rgba(30,30,30,.78),
+          rgba(15,15,15,.75));
+
+      backdrop-filter:blur(22px);
+
+      border:1px solid rgba(255,255,255,.07);
+
+      box-shadow:
+        var(--shadow),
+        inset 0 1px 1px rgba(255,255,255,.05);
+    }
+
+    .gradient-text{
+      background:
+        linear-gradient(to right,
+          #ffe259,
+          #ff8a00,
+          #ff3c00);
+
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .title-glow{
+      text-shadow:
+        0 0 20px rgba(255,153,0,.35),
+        0 0 45px rgba(255,60,0,.15);
+    }
+
+    .hero-bg{
+      position:relative;
+      overflow:hidden;
+
+      background:
+        linear-gradient(to right,
+          rgba(0,0,0,.92),
+          rgba(0,0,0,.55)),
+
+        url('https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1800&auto=format&fit=crop');
+
+      background-size:cover;
+      background-position:center;
+    }
+
+    .btn-primary{
+      background:
+        linear-gradient(to right,
+          #ff3c00,
+          #ff7b00);
+
+      transition:.35s ease;
+
+      box-shadow:
+        0 10px 25px rgba(255,60,0,.3);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-4px) scale(1.02);
+    }
+
+    .btn-green{
+      background:
+        linear-gradient(to right,
+          #16a34a,
+          #22c55e);
+    }
+
+    .btn-yellow{
+      background:
+        linear-gradient(to right,
+          #ffd000,
+          #ff9900);
+
+      color:black;
+    }
+
+    .product-card{
+      position:relative;
+      overflow:hidden;
+
+      border-radius:32px;
+
+      transition:.45s ease;
+
+      border:1px solid rgba(255,255,255,.07);
+
+      background:
+        linear-gradient(to bottom,
+          rgba(25,25,25,.98),
+          rgba(12,12,12,.98));
+    }
+
+    .product-card:hover{
+      transform:
+        translateY(-12px)
+        scale(1.02);
+
+      box-shadow:
+        0 20px 60px rgba(255,60,0,.22);
+    }
+
+    .product-card img{
+      width:100%;
+      height:280px;
+      object-fit:cover;
+
+      transition:.6s ease;
+    }
+
+    .product-card:hover img{
+      transform:scale(1.08);
+    }
+
+    .promo-card{
+      position:relative;
+      overflow:hidden;
+
+      transition:.4s ease;
+    }
+
+    .promo-card:hover{
+      transform:
+        translateY(-8px)
+        scale(1.02);
+    }
+
+    .floating{
+      animation:floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating{
+
+      0%{
+        transform:translateY(0px);
+      }
+
+      50%{
+        transform:translateY(-8px);
+      }
+
+      100%{
+        transform:translateY(0px);
+      }
+
+    }
+
+    @media(max-width:768px){
+
+      .hero-bg h1{
+        font-size:52px !important;
+      }
+
+      .product-card img{
+        height:240px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+
+  <nav class="navbar px-6 py-4">
+
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+
+      <div class="flex items-center gap-4">
+
+        <div
+          class="w-16 h-16 rounded-3xl bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center text-4xl shadow-2xl floating">
+          🍔
+        </div>
+
+        <div>
+
+          <h1 class="text-3xl font-black gradient-text">
+            Mochis Burgers
+          </h1>
+
+          <p class="text-zinc-400 text-sm mt-1">
+            Restaurante Premium
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="hidden lg:flex items-center gap-10 text-zinc-300 font-semibold">
+
+        <a href="#" class="hover:text-orange-400 transition-all">
+          Inicio
+        </a>
+
+        <a href="#" class="hover:text-orange-400 transition-all">
+          Menú
+        </a>
+
+        <a href="#" class="hover:text-orange-400 transition-all">
+          Promociones
+        </a>
+
+        <a href="#" class="hover:text-orange-400 transition-all">
+          Contacto
+        </a>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+  <!-- HERO -->
+
+  <section class="hero-bg min-h-[750px] flex items-center px-6 relative">
+
+    <div class="max-w-7xl mx-auto w-full relative z-10">
+
+      <div class="max-w-3xl">
+
+        <span
+          class="bg-red-600 px-5 py-3 rounded-full text-sm font-black inline-flex items-center gap-2 mb-6 shadow-xl">
+          🔥 COMIDA PREMIUM
+        </span>
+
+        <h1
+          class="text-6xl md:text-8xl font-black leading-tight title-glow">
+
+          EL SABOR MÁS
+
+          <span class="gradient-text">
+            BRUTAL
+          </span>
+
+        </h1>
+
+        <p class="text-zinc-300 text-xl md:text-2xl mt-7 leading-relaxed max-w-2xl">
+          Hamburguesas gigantes, pizzas artesanales, combos épicos y bebidas heladas.
+        </p>
+
+        <div class="flex gap-4 mt-10 flex-wrap">
+
+          <button
+            class="btn-primary px-10 py-5 rounded-3xl text-lg font-black">
+            🍔 Ordenar Ahora
+          </button>
+
+          <button
+            class="glass px-10 py-5 rounded-3xl text-lg font-bold border border-zinc-700 hover:scale-105 transition-all">
+            ⭐ Favoritos
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- MENÚ -->
+
+  <div class="max-w-7xl mx-auto p-6 mt-10">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- PRODUCTO -->
+
+      <div class="product-card overflow-hidden">
+
+        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="p-6">
+
+          <div class="flex justify-between items-center mb-4">
+
+            <h2 class="text-2xl font-black">
+              Classic Burger
+            </h2>
+
+            <span class="text-yellow-400 text-3xl font-black">
+              $8
+            </span>
+
+          </div>
+
+          <p class="text-zinc-400 leading-relaxed">
+            Carne premium, queso cheddar, vegetales frescos y salsa especial.
+          </p>
+
+          <button
+            class="mt-6 w-full btn-primary py-4 rounded-2xl text-lg font-black">
+            🍔 Ordenar
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- PRODUCTO -->
+
+      <div class="product-card overflow-hidden">
+
+        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="p-6">
+
+          <div class="flex justify-between items-center mb-4">
+
+            <h2 class="text-2xl font-black">
+              Pizza Pepperoni
+            </h2>
+
+            <span class="text-yellow-400 text-3xl font-black">
+              $15
+            </span>
+
+          </div>
+
+          <p class="text-zinc-400 leading-relaxed">
+            Pizza artesanal con pepperoni premium y extra queso mozzarella.
+          </p>
+
+          <button
+            class="mt-6 w-full btn-primary py-4 rounded-2xl text-lg font-black">
+            🍕 Ordenar
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- PRODUCTO -->
+
+      <div class="product-card overflow-hidden">
+
+        <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="p-6">
+
+          <div class="flex justify-between items-center mb-4">
+
+            <h2 class="text-2xl font-black">
+              French Fries
+            </h2>
+
+            <span class="text-yellow-400 text-3xl font-black">
+              $4
+            </span>
+
+          </div>
+
+          <p class="text-zinc-400 leading-relaxed">
+            Papas fritas crujientes con cheddar y salsa especial.
+          </p>
+
+          <button
+            class="mt-6 w-full btn-primary py-4 rounded-2xl text-lg font-black">
+            🍟 Ordenar
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>
