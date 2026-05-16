@@ -1461,9 +1461,7 @@ const products = [
     category: 'fries',
     image: '6.jpeg',
     removable: [],
-    extras: [
-      { name: '', price: 1 }
-    ]
+    extras: [    ]
   },
 
   {
@@ -1472,10 +1470,10 @@ const products = [
     price: 3,
     category: 'drink',
     image: '7.jpeg',
-    removable: [''],
+    removable: [],
     extras: [
-      { name: 'Salsa_picante', price: 0.5 },
-      { name: 'Salsa_Casera', price: 0.5 },
+      { name: 'Salsa_picante', price: 5 },
+      { name: 'Salsa_Casera', price: 5 },
 
     ]
   }
@@ -2082,7 +2080,7 @@ function applyCoupon() {
 
   if (coupon === 'BURGER10') {
 
-    discount = 10;
+    discount = 2;
 
     renderCart();
 
