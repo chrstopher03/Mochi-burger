@@ -1,4 +1,4 @@
-const CACHE_NAME = "mochi-burgers-v2";
+const CACHE_NAME = "mochi-burgers-v3";
 
 /* FILES */
 
