@@ -1286,7 +1286,6 @@ function printTicket() {
 
 }
 
-
 window.addEventListener("load", () => {
 
   setTimeout(() => {
@@ -1295,10 +1294,11 @@ window.addEventListener("load", () => {
 
     if(nav){
 
-      nav.classList.remove("hidden");
+      nav.classList.remove("opacity-0");
+      nav.classList.remove("translate-y-20");
 
     }
 
-  }, 3200);
+  }, 3000);
 
 });

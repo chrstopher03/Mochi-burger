@@ -658,21 +658,11 @@
   animation: floatLoader 3s ease-in-out infinite;
 
 }
-/* SAFE SPACE FOR APP NAV */
-
 body{
-  padding-bottom:100px;
+  padding-bottom:110px;
 }
-
-/* REMOVE MOBILE TAP COLOR */
 
 a,
 button{
   -webkit-tap-highlight-color: transparent;
-}
-
-/* SMOOTH APP FEEL */
-
-nav a{
-  user-select:none;
 }
