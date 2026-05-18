@@ -5,7 +5,7 @@ const products = [
   id: 1,
   name: 'Classic Burger',
   description: 'Carne 100% res, queso cheddar y salsa especial.',
-  price: 8,
+  price:240,
   category: 'burger',
   popular: true,
   image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1200&auto=format&fit=crop',
@@ -957,3 +957,18 @@ if("serviceWorker" in navigator){
   });
 
 }
+window.addEventListener("load", () => {
+
+  setTimeout(() => {
+
+    const nav = document.getElementById("bottomNav");
+
+    if(nav){
+
+      nav.classList.remove("hidden");
+
+    }
+
+  }, 3200);
+
+});

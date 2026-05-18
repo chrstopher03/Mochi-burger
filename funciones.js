@@ -1285,3 +1285,20 @@ function printTicket() {
   ticket.document.close();
 
 }
+
+
+window.addEventListener("load", () => {
+
+  setTimeout(() => {
+
+    const nav = document.getElementById("bottomNav");
+
+    if(nav){
+
+      nav.classList.remove("hidden");
+
+    }
+
+  }, 3200);
+
+});
