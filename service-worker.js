@@ -1,4 +1,6 @@
-const CACHE_NAME = "mochi-cache-v1";
+const CACHE_NAME = "mochi-burgers-v2";
+
+/* FILES */
 
 const urlsToCache = [
 
@@ -6,6 +8,7 @@ const urlsToCache = [
   "./index.html",
   "./style.css",
   "./funcion.js",
+  "./manifest.json",
   "./1.jpeg"
 
 ];
@@ -13,6 +16,10 @@ const urlsToCache = [
 /* INSTALL */
 
 self.addEventListener("install", event => {
+
+  console.log("Nueva versión instalada");
+
+  self.skipWaiting();
 
   event.waitUntil(
 
@@ -27,16 +34,57 @@ self.addEventListener("install", event => {
 
 });
 
+/* ACTIVATE */
+
+self.addEventListener("activate", event => {
+
+  console.log("SW activado");
+
+  event.waitUntil(
+
+    caches.keys().then(cacheNames => {
+
+      return Promise.all(
+
+        cacheNames.map(cache => {
+
+          if(cache !== CACHE_NAME){
+
+            console.log("Eliminando cache vieja:", cache);
+
+            return caches.delete(cache);
+
+          }
+
+        })
+
+      );
+
+    })
+
+  );
+
+  self.clients.claim();
+
+});
+
 /* FETCH */
 
 self.addEventListener("fetch", event => {
 
   event.respondWith(
 
-    caches.match(event.request)
+    fetch(event.request)
+
     .then(response => {
 
-      return response || fetch(event.request);
+      return response;
+
+    })
+
+    .catch(() => {
+
+      return caches.match(event.request);
 
     })
 

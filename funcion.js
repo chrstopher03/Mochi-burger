@@ -890,25 +890,69 @@ installBtn.addEventListener("click", async () => {
   }
 
 });
-
-/* REGISTER SERVICE WORKER */
+/* =========================
+REGISTER SW + AUTO UPDATE
+========================= */
 
 if("serviceWorker" in navigator){
 
-  window.addEventListener("load", () => {
+  window.addEventListener("load", async () => {
 
-    navigator.serviceWorker.register("./service-worker.js")
-    .then(() => {
+    try {
+
+      const registration = await navigator.serviceWorker.register("./service-worker.js");
 
       console.log("Service Worker registrado");
 
-    })
+      /* CHECK UPDATE */
 
-    .catch(error => {
+      registration.update();
+
+      /* DETECT NEW VERSION */
+
+      registration.onupdatefound = () => {
+
+        const newWorker = registration.installing;
+
+        newWorker.onstatechange = () => {
+
+          if(newWorker.state === "installed"){
+
+            /* SI YA EXISTE APP ABIERTA */
+
+            if(navigator.serviceWorker.controller){
+
+              Swal.fire({
+
+                icon: "success",
+                title: "Nueva actualización 🚀",
+                text: "La aplicación se actualizará automáticamente",
+                timer: 2500,
+                showConfirmButton: false
+
+              });
+
+              setTimeout(() => {
+
+                window.location.reload();
+
+              }, 2500);
+
+            }
+
+          }
+
+        };
+
+      };
+
+    }
+
+    catch(error){
 
       console.log(error);
 
-    });
+    }
 
   });
 
