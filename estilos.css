@@ -1,0 +1,45 @@
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:#050505;
+  color:white;
+}
+
+.card{
+  background:#101010;
+  border:1px solid #272727;
+  border-radius:28px;
+}
+
+.btn{
+  transition:.3s;
+}
+
+.btn:hover{
+  transform:translateY(-4px);
+}
+
+table{
+  width:100%;
+}
+
+th,
+td{
+  padding:15px;
+  text-align:left;
+}
+
+th{
+  background:#181818;
+}
+
+tr:nth-child(even){
+  background:#0f0f0f;
+}
+
