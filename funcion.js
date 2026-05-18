@@ -811,16 +811,11 @@ window.addEventListener("load", () => {
   }, 80);
 
 });
-
 /* =========================
-PWA INSTALL APP
+PWA INSTALL
 ========================= */
 
-let deferredPrompt;
-
-const installBtn = document.getElementById("installBtn");
-
-/* SHOW INSTALL BUTTON */
+let deferredPrompt = null;
 
 window.addEventListener("beforeinstallprompt", (e) => {
 
@@ -828,44 +823,59 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
   deferredPrompt = e;
 
-  installBtn.classList.remove("hidden");
+  console.log("PWA disponible");
 
 });
 
-/* INSTALL APP */
+/* INSTALL FUNCTION */
 
-installBtn.addEventListener("click", async () => {
+async function installApp(){
 
-  if(!deferredPrompt) return;
+  if(deferredPrompt){
 
-  deferredPrompt.prompt();
+    deferredPrompt.prompt();
 
-  const { outcome } = await deferredPrompt.userChoice;
+    const { outcome } = await deferredPrompt.userChoice;
 
-  if(outcome === "accepted"){
+    if(outcome === "accepted"){
 
-    console.log("APP INSTALADA");
+      Swal.fire({
+
+        icon: "success",
+        title: "App instalada",
+        text: "Mochi Burgers instalada correctamente"
+
+      });
+
+    }
+
+    deferredPrompt = null;
+
+  } else {
+
+    Swal.fire({
+
+      icon: "info",
+      title: "Instalación Manual",
+      html: `
+      En Chrome presiona:<br><br>
+      <b>⋮ → Agregar a pantalla principal</b>
+      `
+
+    });
 
   }
 
-  deferredPrompt = null;
+}
 
-  installBtn.classList.add("hidden");
-
-});
-
-/* REGISTER SERVICE WORKER */
+/* SERVICE WORKER */
 
 if("serviceWorker" in navigator){
 
-  window.addEventListener("load", () => {
+  navigator.serviceWorker.register("service-worker.js")
+  .then(() => {
 
-    navigator.serviceWorker.register("service-worker.js")
-    .then(() => {
-
-      console.log("Service Worker registrado");
-
-    });
+    console.log("SW registrado");
 
   });
 
