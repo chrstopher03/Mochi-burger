@@ -812,10 +812,14 @@ window.addEventListener("load", () => {
 
 });
 /* =========================
-PWA INSTALL
+PWA INSTALL APP
 ========================= */
 
-let deferredPrompt = null;
+let deferredPrompt;
+
+const installBtn = document.getElementById("installBtn");
+
+/* DETECT INSTALL */
 
 window.addEventListener("beforeinstallprompt", (e) => {
 
@@ -827,9 +831,11 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 });
 
-/* INSTALL FUNCTION */
+/* INSTALL BUTTON */
 
-async function installApp(){
+installBtn.addEventListener("click", async () => {
+
+  /* SI EXISTE INSTALL NATIVO */
 
   if(deferredPrompt){
 
@@ -837,45 +843,72 @@ async function installApp(){
 
     const { outcome } = await deferredPrompt.userChoice;
 
+    console.log(outcome);
+
     if(outcome === "accepted"){
 
       Swal.fire({
 
         icon: "success",
-        title: "App instalada",
+        title: "Aplicación instalada",
         text: "Mochi Burgers instalada correctamente"
 
       });
 
     }
 
-    deferredPrompt = null;
+  }
 
-  } else {
+  /* SI NO EXISTE */
+
+  else {
 
     Swal.fire({
 
       icon: "info",
-      title: "Instalación Manual",
+
+      title: "Instalar App",
+
       html: `
-      En Chrome presiona:<br><br>
-      <b>⋮ → Agregar a pantalla principal</b>
+
+      <div style="font-size:16px">
+
+      En Chrome Android:<br><br>
+
+      <b>1.</b> Presiona los <b>3 puntos ⋮</b><br><br>
+
+      <b>2.</b> Presiona:<br><br>
+
+      <b>"Agregar a pantalla principal"</b>
+
+      </div>
+
       `
 
     });
 
   }
 
-}
+});
 
-/* SERVICE WORKER */
+/* REGISTER SERVICE WORKER */
 
 if("serviceWorker" in navigator){
 
-  navigator.serviceWorker.register("service-worker.js")
-  .then(() => {
+  window.addEventListener("load", () => {
 
-    console.log("SW registrado");
+    navigator.serviceWorker.register("./service-worker.js")
+    .then(() => {
+
+      console.log("Service Worker registrado");
+
+    })
+
+    .catch(error => {
+
+      console.log(error);
+
+    });
 
   });
 

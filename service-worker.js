@@ -1,23 +1,33 @@
-const CACHE_NAME = "mochi-burgers-v1";
+const CACHE_NAME = "mochi-cache-v1";
 
 const urlsToCache = [
+
   "./",
   "./index.html",
   "./style.css",
   "./funcion.js",
   "./1.jpeg"
+
 ];
+
+/* INSTALL */
 
 self.addEventListener("install", event => {
 
   event.waitUntil(
 
     caches.open(CACHE_NAME)
-    .then(cache => cache.addAll(urlsToCache))
+    .then(cache => {
+
+      return cache.addAll(urlsToCache);
+
+    })
 
   );
 
 });
+
+/* FETCH */
 
 self.addEventListener("fetch", event => {
 
