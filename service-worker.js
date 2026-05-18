@@ -1,26 +1,35 @@
-self.addEventListener('install',e=>{
+const CACHE_NAME = "mochi-burgers-v1";
 
-  e.waitUntil(
-    caches.open('burger-cache').then(cache=>{
+const urlsToCache = [
+  "./",
+  "./index.html",
+  "./style.css",
+  "./funcion.js",
+  "./1.jpeg"
+];
 
-      return cache.addAll([
-        '/',
-        '/index.html',
-        '/admin.html',
-        '/kitchen.html'
-      ])
+self.addEventListener("install", event => {
+
+  event.waitUntil(
+
+    caches.open(CACHE_NAME)
+    .then(cache => cache.addAll(urlsToCache))
+
+  );
+
+});
+
+self.addEventListener("fetch", event => {
+
+  event.respondWith(
+
+    caches.match(event.request)
+    .then(response => {
+
+      return response || fetch(event.request);
 
     })
-  )
 
-})
+  );
 
-self.addEventListener('fetch',e=>{
-
-  e.respondWith(
-    caches.match(e.request).then(response=>{
-      return response || fetch(e.request)
-    })
-  )
-
-})
+});

@@ -14,7 +14,8 @@
 <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
-
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ff5a00">
 </head><body class="relative overflow-x-hidden bg-[#070707] text-white">
 
   <!-- CINEMATIC LOADER -->
@@ -395,14 +396,13 @@ class="fixed inset-0 z-[99999] bg-black flex items-center justify-center overflo
 
         <div
           class="flex flex-wrap gap-4 mt-10">
+<button
+id="installBtn"
+class="btn-primary px-8 py-4 rounded-2xl text-lg font-black shadow-[0_15px_35px_rgba(255,80,0,.35)] hidden">
 
-          <button
-            class="btn-primary px-8 py-4 rounded-2xl text-lg font-black shadow-[0_15px_35px_rgba(255,80,0,.35)]">
+📲 Instalar App
 
-            🚀 Ordenar Ahora
-
-          </button>
-
+</button>
           <button
             class="glass px-8 py-4 rounded-2xl text-lg font-bold border border-white/10 hover:scale-[1.03] transition-all">
 
@@ -653,14 +653,7 @@ Mochi Burgers        </h1>
 
           <!-- WHATSAPP -->
 
-          <button
-            onclick="sendWhatsAppOrder()"
-            class="w-full mt-3 bg-green-500 hover:bg-green-600 py-4 rounded-2xl text-xl font-black transition-all">
-
-            WhatsApp
-
-          </button>
-
+         
         </div>
 
       </aside>
@@ -817,46 +810,8 @@ Mochi Burgers        </h1>
     </div>
 
   </div>
-<!-- QR TABLE -->
 
-<div class="glass rounded-3xl p-6 mt-6">
-
-  <div class="flex items-center justify-between flex-wrap gap-5">
-
-    <div>
-
-      <h2 class="text-3xl font-black gradient-text">
-        QR de Mesa
-      </h2>
-
-      <p class="text-zinc-400 mt-2">
-        Escanea para ordenar directamente
-      </p>
-
-    </div>
-
-    <button
-    onclick="generateTableQR()"
-    class="btn-primary px-6 py-3 rounded-2xl font-black">
-
-      Generar QR
-
-    </button>
-
-  </div>
-
-  <div class="flex justify-center mt-8">
-
-    <div
-    id="qrcode"
-    class="bg-white p-5 rounded-3xl shadow-2xl">
-    </div>
-
-  </div>
-
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
+  
 <!-- AGREGA ESTO ANTES DE TU SCRIPT -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

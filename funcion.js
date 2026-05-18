@@ -813,44 +813,60 @@ window.addEventListener("load", () => {
 });
 
 /* =========================
-QR POR MESA
+PWA INSTALL APP
 ========================= */
 
-function generateTableQR(){
+let deferredPrompt;
 
-  const table = document.getElementById("tableNumber").value;
+const installBtn = document.getElementById("installBtn");
 
-  const qrContainer = document.getElementById("qrcode");
+/* SHOW INSTALL BUTTON */
 
-  qrContainer.innerHTML = "";
+window.addEventListener("beforeinstallprompt", (e) => {
 
-  const url = window.location.origin + window.location.pathname + "?mesa=" + table;
+  e.preventDefault();
 
-  new QRCode(qrContainer, {
+  deferredPrompt = e;
 
-    text: url,
-    width: 260,
-    height: 260,
-    colorDark : "#000000",
-    colorLight : "#ffffff",
-    correctLevel : QRCode.CorrectLevel.H
+  installBtn.classList.remove("hidden");
+
+});
+
+/* INSTALL APP */
+
+installBtn.addEventListener("click", async () => {
+
+  if(!deferredPrompt) return;
+
+  deferredPrompt.prompt();
+
+  const { outcome } = await deferredPrompt.userChoice;
+
+  if(outcome === "accepted"){
+
+    console.log("APP INSTALADA");
+
+  }
+
+  deferredPrompt = null;
+
+  installBtn.classList.add("hidden");
+
+});
+
+/* REGISTER SERVICE WORKER */
+
+if("serviceWorker" in navigator){
+
+  window.addEventListener("load", () => {
+
+    navigator.serviceWorker.register("service-worker.js")
+    .then(() => {
+
+      console.log("Service Worker registrado");
+
+    });
 
   });
 
 }
-
-/* AUTO SELECT TABLE */
-
-window.addEventListener("DOMContentLoaded", () => {
-
-  const params = new URLSearchParams(window.location.search);
-
-  const mesa = params.get("mesa");
-
-  if(mesa){
-
-    document.getElementById("tableNumber").value = mesa;
-
-  }
-
-});
