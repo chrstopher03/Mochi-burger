@@ -1,641 +1,1310 @@
+/* =========================
+   RESET
+========================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+:root{
+  --primary:#ff5a1f;
+  --secondary:#ffb800;
+  --dark:#050505;
+  --card:rgba(15,15,15,.78);
+  --glass:rgba(255,255,255,.06);
+
+  --success:#22c55e;
+  --danger:#ef4444;
+
+  --shadow:
+    0 20px 60px rgba(0,0,0,.45);
+
+  --orange-glow:
+    0 0 25px rgba(255,90,31,.35);
+
+  --radius:28px;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+html,
+body{
+  width:100%;
+  overflow-x:hidden;
+}
+
+body{
+  font-family:'Poppins',sans-serif;
+  color:white;
+  overflow-x:hidden;
+  min-height:100vh;
+
+  padding-bottom:
+  calc(110px + env(safe-area-inset-bottom));
+
+  background:
+    radial-gradient(circle at top left,
+      rgba(255,90,31,.22),
+      transparent 25%),
+
+    radial-gradient(circle at top right,
+      rgba(255,184,0,.16),
+      transparent 30%),
+
+    radial-gradient(circle at bottom,
+      rgba(255,255,255,.03),
+      transparent 30%),
+
+    linear-gradient(to bottom,
+      #020202,
+      #0b1120,
+      #101826);
+
+  position:relative;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+
+  background-image:
+    linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+
+  background-size:40px 40px;
+
+  mask-image:linear-gradient(to bottom, transparent, black);
+}
+
+img,
+video,
+canvas{
+  max-width:100%;
+  height:auto;
+}
+
+img{
+  user-select:none;
+  display:block;
+}
+
+a,
+button{
+  -webkit-tap-highlight-color:transparent;
+}
+
+h1,h2,h3,h4,h5,h6,p,span,a{
+  word-wrap:break-word;
+}
+
+/* =========================
+   SCROLL
+========================= */
+
+::-webkit-scrollbar{
+  width:9px;
+}
+
+::-webkit-scrollbar-thumb{
+  border-radius:999px;
+
+  background:
+    linear-gradient(to bottom,
+      #ff5a1f,
+      #ffb800);
+}
+
+::-webkit-scrollbar-track{
+  background:#080808;
+}
+
+/* =========================
+   CONTAINERS
+========================= */
+
+.container,
+.wrapper,
+section{
+  width:100%;
+  max-width:1400px;
+  margin:auto;
+  padding-left:20px;
+  padding-right:20px;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+  position:sticky;
+  top:0;
+  z-index:999;
+
+  width:100%;
+
+  padding:16px 24px;
+
+  backdrop-filter:blur(20px);
+
+  background:
+    linear-gradient(to right,
+      rgba(0,0,0,.75),
+      rgba(15,15,15,.6));
+
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.nav-links{
+  display:flex;
+  gap:25px;
+  flex-wrap:wrap;
+}
+
+.nav-link{
+  position:relative;
+  transition:.3s ease;
+}
+
+.nav-link:hover{
+  color:#ffb800;
+}
+
+.nav-link::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-8px;
+
+  width:0%;
+  height:3px;
+  border-radius:999px;
+
+  background:
+    linear-gradient(to right,
+      #ff5a1f,
+      #ffb800);
 
+  transition:.3s ease;
+}
 
-  *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-  }
+.nav-link:hover::after{
+  width:100%;
+}
 
-  :root{
-    --primary:#ff5a1f;
-    --secondary:#ffb800;
-    --dark:#050505;
-    --card:rgba(15,15,15,.78);
-    --glass:rgba(255,255,255,.06);
+/* =========================
+   GLASS
+========================= */
 
-    --success:#22c55e;
-    --danger:#ef4444;
+.glass{
+  background:
+    linear-gradient(to bottom,
+      rgba(30,30,30,.78),
+      rgba(15,15,15,.75));
 
-    --shadow:
-      0 20px 60px rgba(0,0,0,.45);
+  backdrop-filter:blur(22px);
 
-    --orange-glow:
-      0 0 25px rgba(255,90,31,.35);
+  border:1px solid rgba(255,255,255,.07);
 
-    --radius:28px;
-  }
+  box-shadow:
+    var(--shadow),
+    inset 0 1px 1px rgba(255,255,255,.05);
+}
 
-  html{
-    scroll-behavior:smooth;
-  }
+/* =========================
+   TEXT
+========================= */
 
-  body{
-    font-family:'Poppins',sans-serif;
-    color:white;
-    overflow-x:hidden;
-    min-height:100vh;
+.gradient-text{
+  background:
+    linear-gradient(to right,
+      #ffe259,
+      #ff8a00,
+      #ff3c00);
 
-    background:
-      radial-gradient(circle at top left,
-        rgba(255,90,31,.22),
-        transparent 25%),
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
 
-      radial-gradient(circle at top right,
-        rgba(255,184,0,.16),
-        transparent 30%),
+.title-glow{
+  text-shadow:
+    0 0 20px rgba(255,153,0,.35),
+    0 0 45px rgba(255,60,0,.15);
+}
 
-      radial-gradient(circle at bottom,
-        rgba(255,255,255,.03),
-        transparent 30%),
+/* =========================
+   HERO
+========================= */
 
-      linear-gradient(to bottom,
-        #020202,
-        #0b1120,
-        #101826);
+.hero-bg{
+  position:relative;
+  min-height:100vh;
 
-    position:relative;
-  }
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 
-  body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
+  gap:40px;
 
-    background-image:
-      linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+  flex-wrap:wrap;
 
-    background-size:40px 40px;
+  padding-top:120px;
+  padding-bottom:80px;
+}
 
-    mask-image:linear-gradient(to bottom, transparent, black);
-  }
+.hero-content{
+  flex:1 1 500px;
+  z-index:2;
+}
 
-  img{
-    user-select:none;
-  }
+.hero-bg h1{
+  font-size:clamp(42px,7vw,110px);
+  line-height:1;
+}
 
-  /* SCROLL */
+.hero-bg p{
+  font-size:clamp(15px,2vw,20px);
+  line-height:1.7;
+}
 
-  ::-webkit-scrollbar{
-    width:9px;
-  }
+/* =========================================
+   ULTRA REALISTIC 3D BURGER
+========================================= */
 
-  ::-webkit-scrollbar-thumb{
-    border-radius:999px;
+.burger-scene{
 
-    background:
-      linear-gradient(to bottom,
-        #ff5a1f,
-        #ffb800);
-  }
+  position:absolute;
 
-  ::-webkit-scrollbar-track{
-    background:#080808;
-  }
+  right:2%;
+  top:50%;
 
-  /* NAVBAR */
+  transform:translateY(-50%);
 
-  .navbar{
-    position:sticky;
-    top:0;
-    z-index:999;
+  width:500px;
+  height:600px;
 
-    backdrop-filter:blur(20px);
+  z-index:50;
 
-    background:
-      linear-gradient(to right,
-        rgba(0,0,0,.75),
-        rgba(15,15,15,.6));
-
-    border-bottom:1px solid rgba(255,255,255,.06);
-  }
-
-  .nav-link{
-    position:relative;
-    transition:.3s ease;
-  }
-
-  .nav-link:hover{
-    color:#ffb800;
-  }
-
-  .nav-link::after{
-    content:"";
-    position:absolute;
-    left:0;
-    bottom:-8px;
-
-    width:0%;
-    height:3px;
-    border-radius:999px;
-
-    background:
-      linear-gradient(to right,
-        #ff5a1f,
-        #ffb800);
-
-    transition:.3s ease;
-  }
+  perspective:1200px;
 
-  .nav-link:hover::after{
-    width:100%;
-  }
+  flex:1 1 450px;
 
-  /* GLASS */
-
-  .glass{
-    background:
-      linear-gradient(to bottom,
-        rgba(30,30,30,.78),
-        rgba(15,15,15,.75));
+  max-width:100%;
 
-    backdrop-filter:blur(22px);
-
-    border:1px solid rgba(255,255,255,.07);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-    box-shadow:
-      var(--shadow),
-      inset 0 1px 1px rgba(255,255,255,.05);
-  }
+/* =========================================
+   LIGHTING
+========================================= */
 
-  /* TEXT */
+.burger-scene::before{
 
-  .gradient-text{
-    background:
-      linear-gradient(to right,
-        #ffe259,
-        #ff8a00,
-        #ff3c00);
+  content:"";
 
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-  }
+  position:absolute;
 
-  .title-glow{
-    text-shadow:
-      0 0 20px rgba(255,153,0,.35),
-      0 0 45px rgba(255,60,0,.15);
-  }
+  inset:0;
 
-  /* HERO */
-
-  .hero-bg{
-    position:relative;
-    overflow:hidden;
+  background:
+  radial-gradient(circle,
+  rgba(255,140,0,.30),
+  transparent 65%);
 
-    background:
-      linear-gradient(to right,
-        rgba(0,0,0,.92),
-        rgba(0,0,0,.55)),
+  filter:blur(80px);
 
-      url('https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1800&auto=format&fit=crop');
+  animation:
+  glowPulse 4s infinite alternate;
+}
 
-    background-size:cover;
-    background-position:center;
-  }
+/* =========================================
+   BURGER CONTAINER
+========================================= */
 
-  .hero-bg::before{
-    content:"";
-    position:absolute;
-    inset:0;
+.realistic-burger{
 
-    background:
-      radial-gradient(circle at center,
-        transparent,
-        rgba(0,0,0,.65));
-  }
+  position:absolute;
 
-  .hero-bg::after{
-    content:"";
-    position:absolute;
-    inset:0;
+  inset:0;
 
-    background:
-      linear-gradient(to top,
-        rgba(0,0,0,.8),
-        transparent);
-  }
+  transform-style:preserve-3d;
 
-  /* HERO BADGE */
+  animation:
+  burgerLoop 6s linear infinite;
+}
 
-  .hero-badge{
-    animation:pulseBadge 2s infinite;
-    box-shadow:0 0 30px rgba(239,68,68,.35);
-  }
+/* =========================================
+   GENERAL INGREDIENT STYLE
+========================================= */
 
-  /* BUTTONS */
+.layer{
 
-  .btn-primary{
-    position:relative;
-    overflow:hidden;
+  position:absolute;
 
-    background:
-      linear-gradient(to right,
-        #ff3c00,
-        #ff7b00);
+  left:50%;
 
-    transition:.35s ease;
+  transform:
+  translateX(-50%)
+  rotateX(12deg);
 
-    box-shadow:
-      0 10px 25px rgba(255,60,0,.3);
-  }
+  border-radius:100px;
 
-  .btn-primary:hover{
-    transform:translateY(-4px) scale(1.02);
+  opacity:0;
 
-    box-shadow:
-      0 18px 35px rgba(255,60,0,.4);
-  }
+  animation-duration:6s;
+  animation-iteration-count:infinite;
+  animation-fill-mode:both;
 
-  .btn-primary::before{
-    content:"";
-    position:absolute;
+  box-shadow:
+  0 25px 40px rgba(0,0,0,.35);
+}
 
-    top:0;
-    left:-120%;
+/* =========================================
+   TOP BUN
+========================================= */
 
-    width:100%;
-    height:100%;
+.top-bun{
 
-    background:
-      linear-gradient(to right,
-        transparent,
-        rgba(255,255,255,.25),
-        transparent);
+  width:340px;
+  height:135px;
 
-    transition:.7s;
-  }
+  top:40px;
 
-  .btn-primary:hover::before{
-    left:120%;
-  }
+  border-radius:
+  220px 220px 110px 110px;
 
-  .btn-green{
-    background:
-      linear-gradient(to right,
-        #16a34a,
-        #22c55e);
+  background:
+  radial-gradient(circle at 50% 20%,
+  #fff3d1,
+  #ffcc73 30%,
+  #d97904 85%);
 
-    transition:.3s ease;
-  }
+  box-shadow:
+  inset 0 8px 12px rgba(255,255,255,.35),
+  inset 0 -10px 20px rgba(0,0,0,.25),
+  0 30px 60px rgba(255,140,0,.35);
 
-  .btn-green:hover{
-    transform:translateY(-3px);
+  animation:
+  bunDropLoop 6s infinite;
+}
 
-    box-shadow:
-      0 12px 30px rgba(34,197,94,.3);
-  }
+.top-bun::before{
 
-  .btn-yellow{
-    background:
-      linear-gradient(to right,
-        #ffd000,
-        #ff9900);
+  content:"";
 
-    color:black;
+  position:absolute;
+  inset:0;
 
-    transition:.3s ease;
-  }
+  background-image:
+  radial-gradient(#fff 2px, transparent 3px);
 
-  .btn-yellow:hover{
-    transform:scale(1.03);
-  }
+  background-size:45px 45px;
 
-  /* PRODUCT CARD */
+  opacity:.6;
+}
 
-  .product-card{
-    position:relative;
-    overflow:hidden;
+/* =========================================
+   LETTUCE
+========================================= */
 
-    border-radius:32px;
+.lettuce{
 
-    transition:.45s ease;
+  width:300px;
+  height:30px;
 
-    border:1px solid rgba(255,255,255,.07);
+  top:185px;
 
-    background:
-      linear-gradient(to bottom,
-        rgba(25,25,25,.98),
-        rgba(12,12,12,.98));
-  }
+  background:
+  linear-gradient(to right,
+  #1ea84b,
+  #49ff7a,
+  #1ea84b);
 
-  .product-card::after{
-    content:"";
-    position:absolute;
-    inset:0;
+  border-radius:50px;
 
-    background:
-      linear-gradient(to top,
-        rgba(0,0,0,.85),
-        transparent 50%);
+  filter:
+  drop-shadow(0 0 15px rgba(34,197,94,.45));
 
-    pointer-events:none;
-  }
+  animation:
+  ingredientLoop 6s infinite;
 
-  .product-card:hover{
+  animation-delay:.5s;
+}
+
+/* =========================================
+   TOMATO
+========================================= */
+
+.tomato{
+
+  width:280px;
+  height:28px;
+
+  top:225px;
+
+  background:
+  linear-gradient(to bottom,
+  #ff6b6b,
+  #c1121f);
+
+  border-radius:40px;
+
+  box-shadow:
+  inset 0 3px 5px rgba(255,255,255,.25);
+
+  animation:
+  ingredientLoop 6s infinite;
+
+  animation-delay:1s;
+}
+
+/* =========================================
+   CHEESE
+========================================= */
+
+.cheese{
+
+  width:260px;
+  height:50px;
+
+  top:255px;
+
+  background:
+  linear-gradient(to bottom,
+  #ffe45c,
+  #facc15);
+
+  clip-path:polygon(
+  0 0,
+  100% 0,
+  94% 100%,
+  72% 72%,
+  50% 100%,
+  28% 72%,
+  6% 100%);
+
+  filter:
+  drop-shadow(0 0 12px rgba(255,220,0,.45));
+
+  animation:
+  cheeseLoop 6s infinite;
+
+  animation-delay:1.5s;
+}
+
+/* =========================================
+   MEAT
+========================================= */
+
+.meat{
+
+  width:310px;
+  height:75px;
+
+  top:305px;
+
+  background:
+  linear-gradient(to bottom,
+  #6a2d12,
+  #2c1208);
+
+  border-radius:60px;
+
+  box-shadow:
+  inset 0 10px 15px rgba(255,255,255,.06),
+  inset 0 -10px 15px rgba(0,0,0,.35),
+  0 20px 35px rgba(0,0,0,.45);
+
+  animation:
+  ingredientLoop 6s infinite;
+
+  animation-delay:2s;
+}
+
+.meat::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:18px 30px;
+
+  background:
+  repeating-linear-gradient(
+  90deg,
+  rgba(0,0,0,.25),
+  rgba(0,0,0,.25) 10px,
+  transparent 10px,
+  transparent 22px);
+
+  opacity:.5;
+}
+
+/* =========================================
+   BOTTOM BUN
+========================================= */
+
+.bottom-bun{
+
+  width:320px;
+  height:85px;
+
+  top:390px;
+
+  background:
+  radial-gradient(circle at 50% 10%,
+  #ffd18a,
+  #de840d 80%);
+
+  border-radius:50px;
+
+  box-shadow:
+  inset 0 8px 10px rgba(255,255,255,.15),
+  0 20px 50px rgba(255,140,0,.25);
+
+  animation:
+  bottomLoop 6s infinite;
+
+  animation-delay:2.5s;
+}
+
+/* =========================================
+   FIRE
+========================================= */
+
+.fire{
+
+  position:absolute;
+
+  bottom:80px;
+
+  width:90px;
+  height:180px;
+
+  border-radius:50%;
+
+  background:
+  linear-gradient(to top,
+  #ff2d00,
+  #ff7300,
+  #ffd000,
+  rgba(255,255,255,.7));
+
+  filter:blur(8px);
+
+  mix-blend-mode:screen;
+
+  opacity:.85;
+
+  animation:
+  fireMove 1.4s infinite ease-in-out;
+}
+
+.fire1{
+  left:120px;
+}
+
+.fire2{
+  left:200px;
+  animation-delay:.5s;
+}
+
+.fire3{
+  left:280px;
+  animation-delay:1s;
+}
+
+/* =========================================
+   SMOKE
+========================================= */
+
+.smoke{
+
+  position:absolute;
+
+  width:35px;
+  height:160px;
+
+  border-radius:50%;
+
+  background:
+  linear-gradient(to top,
+  rgba(255,255,255,0),
+  rgba(255,255,255,.35));
+
+  filter:blur(18px);
+
+  opacity:0;
+
+  animation:
+  smokeMove 4s infinite;
+}
+
+.smoke1{
+  left:170px;
+  top:60px;
+}
+
+.smoke2{
+  left:230px;
+  top:40px;
+  animation-delay:1.5s;
+}
+
+.smoke3{
+  left:290px;
+  top:70px;
+  animation-delay:3s;
+}
+
+/* =========================================
+   SPARKS
+========================================= */
+
+.spark{
+
+  position:absolute;
+
+  width:8px;
+  height:8px;
+
+  border-radius:50%;
+
+  background:#ffd000;
+
+  bottom:120px;
+
+  filter:blur(1px);
+
+  animation:
+  sparkFly 2s infinite;
+}
+
+.spark1{
+  left:170px;
+}
+
+.spark2{
+  left:240px;
+  animation-delay:.6s;
+}
+
+.spark3{
+  left:310px;
+  animation-delay:1.2s;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn-primary,
+.btn-green,
+.btn-yellow{
+  min-height:52px;
+
+  padding:14px 26px;
+
+  border:none;
+  border-radius:18px;
+
+  cursor:pointer;
+}
+
+.btn-primary{
+  position:relative;
+  overflow:hidden;
+
+  background:
+    linear-gradient(to right,
+      #ff3c00,
+      #ff7b00);
+
+  transition:.35s ease;
+
+  box-shadow:
+    0 10px 25px rgba(255,60,0,.3);
+}
+
+.btn-primary:hover{
+  transform:translateY(-4px) scale(1.02);
+
+  box-shadow:
+    0 18px 35px rgba(255,60,0,.4);
+}
+
+.btn-primary::before{
+  content:"";
+  position:absolute;
+
+  top:0;
+  left:-120%;
+
+  width:100%;
+  height:100%;
+
+  background:
+    linear-gradient(to right,
+      transparent,
+      rgba(255,255,255,.25),
+      transparent);
+
+  transition:.7s;
+}
+
+.btn-primary:hover::before{
+  left:120%;
+}
+
+.btn-green{
+  background:
+    linear-gradient(to right,
+      #16a34a,
+      #22c55e);
+
+  transition:.3s ease;
+}
+
+.btn-green:hover{
+  transform:translateY(-3px);
+
+  box-shadow:
+    0 12px 30px rgba(34,197,94,.3);
+}
+
+.btn-yellow{
+  background:
+    linear-gradient(to right,
+      #ffd000,
+      #ff9900);
+
+  color:black;
+
+  transition:.3s ease;
+}
+
+.btn-yellow:hover{
+  transform:scale(1.03);
+}
+
+/* =========================
+   GRID PRODUCTOS
+========================= */
+
+.products-grid{
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(240px,1fr));
+
+  gap:24px;
+}
+
+/* =========================
+   PRODUCT CARD
+========================= */
+
+.product-card{
+  position:relative;
+  overflow:hidden;
+
+  border-radius:32px;
+
+  transition:.45s ease;
+
+  border:1px solid rgba(255,255,255,.07);
+
+  background:
+    linear-gradient(to bottom,
+      rgba(25,25,25,.98),
+      rgba(12,12,12,.98));
+
+  display:flex;
+  flex-direction:column;
+
+  width:100%;
+  min-width:0;
+
+  height:100%;
+}
+
+.product-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(to top,
+      rgba(0,0,0,.85),
+      transparent 50%);
+
+  pointer-events:none;
+}
+
+.product-card:hover{
+  transform:
+    translateY(-12px)
+    scale(1.02);
+
+  box-shadow:
+    0 20px 60px rgba(255,60,0,.22),
+    0 0 0 1px rgba(255,255,255,.05);
+}
+
+.product-card img{
+  width:100%;
+  height:280px;
+  object-fit:cover;
+
+  transition:.6s ease;
+}
+
+.product-card:hover img{
+  transform:scale(1.08);
+}
+
+.product-content{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:18px;
+}
+
+/* =========================
+   POPULAR
+========================= */
+
+.badge-popular{
+  animation:pulseBadge 2s infinite;
+}
+
+/* =========================
+   FLOAT
+========================= */
+
+.floating {
+  animation: floatLoader 3s ease-in-out infinite;
+}
+
+/* =========================
+   PROMOS
+========================= */
+
+.promo-card{
+  position:relative;
+  overflow:hidden;
+
+  transition:.4s ease;
+
+  border:1px solid rgba(255,255,255,.08);
+
+  box-shadow:
+    0 10px 35px rgba(0,0,0,.25);
+}
+
+.promo-card:hover{
+  transform:
+    translateY(-8px)
+    scale(1.02);
+}
+
+/* =========================
+   CART
+========================= */
+
+.cart-item{
+  transition:.3s ease;
+}
+
+.cart-item:hover{
+  transform:scale(1.02);
+
+  background:
+    rgba(255,255,255,.03);
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input,
+select{
+  transition:.3s ease;
+}
+
+input:focus,
+select:focus{
+  border-color:#ff6b00;
+
+  box-shadow:
+    0 0 0 4px rgba(255,107,0,.15);
+}
+
+/* =========================
+   FLOATING CART
+========================= */
+
+.floating-cart{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  z-index:999;
+}
+
+.floating-cart button{
+  width:75px;
+  height:75px;
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(to right,
+      #ff3c00,
+      #ff9500);
+
+  font-size:30px;
+
+  box-shadow:
+    0 15px 40px rgba(255,60,0,.45);
+
+  transition:.3s ease;
+}
+
+.floating-cart button:hover{
+  transform:scale(1.1) rotate(8deg);
+}
+
+/* =========================
+   ONLINE DOT
+========================= */
+
+.online-dot{
+  width:10px;
+  height:10px;
+
+  border-radius:999px;
+
+  background:#22c55e;
+
+  box-shadow:
+    0 0 15px #22c55e;
+
+  animation:livePulse 1.5s infinite;
+}
+
+/* =========================
+   FLEX FIX
+========================= */
+
+.flex-responsive{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.flex-responsive > *{
+  flex:1 1 300px;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes bunDropLoop{
+
+  0%{
+    opacity:0;
+
     transform:
-      translateY(-12px)
-      scale(1.02);
-
-    box-shadow:
-      0 20px 60px rgba(255,60,0,.22),
-      0 0 0 1px rgba(255,255,255,.05);
+    translateX(-50%)
+    translateY(-250px)
+    rotateX(60deg)
+    scale(.3);
   }
 
-  .product-card img{
-    width:100%;
-    height:280px;
-    object-fit:cover;
+  12%{
+    opacity:1;
 
-    transition:.6s ease;
+    transform:
+    translateX(-50%)
+    translateY(0)
+    rotateX(12deg)
+    scale(1);
   }
 
-  .product-card:hover img{
+  82%{
+    opacity:1;
+
+    transform:
+    translateX(-50%)
+    translateY(0)
+    rotateX(12deg)
+    scale(1);
+  }
+
+  100%{
+    opacity:0;
+
+    transform:
+    translateX(-50%)
+    translateY(-150px)
+    rotateX(40deg)
+    scale(.5);
+  }
+
+}
+
+@keyframes ingredientLoop{
+
+  0%{
+    opacity:0;
+
+    transform:
+    translateX(-50%)
+    scale(.2)
+    rotateX(80deg);
+  }
+
+  15%{
+    opacity:1;
+
+    transform:
+    translateX(-50%)
+    scale(1)
+    rotateX(12deg);
+  }
+
+  82%{
+    opacity:1;
+
+    transform:
+    translateX(-50%)
+    scale(1)
+    rotateX(12deg);
+  }
+
+  100%{
+    opacity:0;
+
+    transform:
+    translateX(-50%)
+    scale(.2)
+    rotateX(60deg);
+  }
+
+}
+
+@keyframes cheeseLoop{
+
+  0%{
+    opacity:0;
+
+    transform:
+    translateX(-50%)
+    translateY(-120px)
+    rotateX(70deg);
+  }
+
+  18%{
+    opacity:1;
+
+    transform:
+    translateX(-50%)
+    translateY(0)
+    rotateX(12deg);
+  }
+
+  82%{
+    opacity:1;
+
+    transform:
+    translateX(-50%)
+    translateY(0)
+    rotateX(12deg);
+  }
+
+  100%{
+    opacity:0;
+
+    transform:
+    translateX(-50%)
+    translateY(-100px)
+    rotateX(60deg);
+  }
+
+}
+
+@keyframes bottomLoop{
+
+  0%{
+    opacity:0;
+
+    transform:
+    translateX(-50%)
+    translateY(250px)
+    rotateX(60deg)
+    scale(.4);
+  }
+
+  22%{
+    opacity:1;
+
+    transform:
+    translateX(-50%)
+    translateY(0)
+    rotateX(12deg)
+    scale(1);
+  }
+
+  82%{
+    opacity:1;
+
+    transform:
+    translateX(-50%)
+    translateY(0)
+    rotateX(12deg)
+    scale(1);
+  }
+
+  100%{
+    opacity:0;
+
+    transform:
+    translateX(-50%)
+    translateY(150px)
+    rotateX(40deg)
+    scale(.5);
+  }
+
+}
+
+@keyframes burgerLoop{
+
+  0%{
+    transform:
+    rotateY(-8deg)
+    translateY(40px);
+  }
+
+  50%{
+    transform:
+    rotateY(8deg)
+    translateY(-10px);
+  }
+
+  100%{
+    transform:
+    rotateY(-8deg)
+    translateY(40px);
+  }
+
+}
+
+@keyframes fireMove{
+
+  0%{
+    transform:
+    scaleY(1)
+    translateY(0);
+  }
+
+  50%{
+    transform:
+    scaleY(1.4)
+    translateY(-15px);
+  }
+
+  100%{
+    transform:
+    scaleY(1)
+    translateY(0);
+  }
+
+}
+
+@keyframes smokeMove{
+
+  0%{
+    transform:
+    translateY(0)
+    scale(.7);
+
+    opacity:0;
+  }
+
+  20%{
+    opacity:.5;
+  }
+
+  100%{
+    transform:
+    translateY(-180px)
+    scale(1.8);
+
+    opacity:0;
+  }
+
+}
+
+@keyframes sparkFly{
+
+  0%{
+    transform:
+    translateY(0)
+    scale(1);
+
+    opacity:1;
+  }
+
+  100%{
+    transform:
+    translateY(-220px)
+    translateX(50px)
+    scale(0);
+
+    opacity:0;
+  }
+
+}
+
+@keyframes glowPulse{
+
+  from{
+    transform:scale(1);
+    opacity:.5;
+  }
+
+  to{
+    transform:scale(1.15);
+    opacity:.9;
+  }
+
+}
+
+@keyframes pulseBadge{
+
+  0%{
+    transform:scale(1);
+  }
+
+  50%{
     transform:scale(1.08);
   }
 
-  /* POPULAR */
-
-  .badge-popular{
-    animation:pulseBadge 2s infinite;
+  100%{
+    transform:scale(1);
   }
 
-  @keyframes pulseBadge{
-
-    0%{
-      transform:scale(1);
-    }
-
-    50%{
-      transform:scale(1.08);
-    }
-
-    100%{
-      transform:scale(1);
-    }
-
-  }
-
-  /* FLOAT */
-
-  .floating{
-    animation:floating 3s ease-in-out infinite;
-  }
-
-  @keyframes floating{
-
-    0%{
-      transform:translateY(0px);
-    }
-
-    50%{
-      transform:translateY(-8px);
-    }
-
-    100%{
-      transform:translateY(0px);
-    }
-
-  }
-
-  /* PROMOS */
-
-  .promo-card{
-    position:relative;
-    overflow:hidden;
-
-    transition:.4s ease;
-
-    border:1px solid rgba(255,255,255,.08);
-
-    box-shadow:
-      0 10px 35px rgba(0,0,0,.25);
-  }
-
-  .promo-card:hover{
-    transform:
-      translateY(-8px)
-      scale(1.02);
-  }
-
-  .promo-card::before{
-    content:"";
-    position:absolute;
-
-    top:-120%;
-    left:-120%;
-
-    width:250%;
-    height:250%;
-
-    background:
-      linear-gradient(to right,
-        transparent,
-        rgba(255,255,255,.18),
-        transparent);
-
-    transform:rotate(25deg);
-
-    transition:.8s;
-  }
-
-  .promo-card:hover::before{
-    left:120%;
-  }
-
-  /* CART */
-
-  .cart-item{
-    transition:.3s ease;
-  }
-
-  .cart-item:hover{
-    transform:scale(1.02);
-
-    background:
-      rgba(255,255,255,.03);
-  }
-
-  /* INPUT */
-
-  input,
-  select{
-    transition:.3s ease;
-  }
-
-  input:focus,
-  select:focus{
-    border-color:#ff6b00;
-
-    box-shadow:
-      0 0 0 4px rgba(255,107,0,.15);
-  }
-
-  /* SEARCH GLOW */
-
-  .search-box{
-    position:relative;
-  }
-
-  .search-box::after{
-    content:"";
-    position:absolute;
-    inset:0;
-
-    border-radius:24px;
-
-    box-shadow:
-      0 0 30px rgba(255,107,0,.08);
-
-    pointer-events:none;
-  }
-
-  /* ORDER PANEL */
-
-  .kitchen-live{
-    animation:livePulse 2s infinite;
-  }
-
-  @keyframes livePulse{
-
-    0%{
-      opacity:1;
-    }
-
-    50%{
-      opacity:.6;
-    }
-
-    100%{
-      opacity:1;
-    }
-
-  }
-
-  /* ALERT */
-
-  .alert-glow{
-    box-shadow:
-      0 15px 40px rgba(0,0,0,.45);
-  }
-
-  /* MODAL */
-
-  #customizeModal{
-    backdrop-filter:blur(8px);
-  }
-
-  /* FADE */
-
-  .fade-up{
-    animation:fadeUp .8s ease;
-  }
-
-  @keyframes fadeUp{
-
-    from{
-      opacity:0;
-      transform:translateY(25px);
-    }
-
-    to{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-  }
-
-  /* FLOATING CART */
-
-  .floating-cart{
-    position:fixed;
-    bottom:25px;
-    right:25px;
-    z-index:999;
-  }
-
-  .floating-cart button{
-    width:75px;
-    height:75px;
-
-    border-radius:999px;
-
-    background:
-      linear-gradient(to right,
-        #ff3c00,
-        #ff9500);
-
-    font-size:30px;
-
-    box-shadow:
-      0 15px 40px rgba(255,60,0,.45);
-
-    transition:.3s ease;
-  }
-
-  .floating-cart button:hover{
-    transform:scale(1.1) rotate(8deg);
-  }
-
-  /* ONLINE DOT */
-
-  .online-dot{
-    width:10px;
-    height:10px;
-
-    border-radius:999px;
-
-    background:#22c55e;
-
-    box-shadow:
-      0 0 15px #22c55e;
-
-    animation:livePulse 1.5s infinite;
-  }
-
-  /* RESPONSIVE */
-
-  @media(max-width:1024px){
-
-    .hero-bg{
-      min-height:650px;
-      padding-top:70px;
-    }
-
-  }
-
-  @media(max-width:768px){
-
-    .hero-bg h1{
-      font-size:52px !important;
-      line-height:1.1;
-    }
-
-    .product-card img{
-      height:240px;
-    }
-
-    .navbar{
-      padding:18px;
-    }
-
-  }
-
-  @media(max-width:480px){
-
-    .hero-bg h1{
-      font-size:42px !important;
-    }
-
-    .product-card{
-      border-radius:24px;
-    }
-
-  }
-
-
-/* LOADER */
+}
 
 @keyframes floatLoader {
 
@@ -653,16 +1322,298 @@
 
 }
 
-.floating {
+/* =========================
+   RESPONSIVE
+========================= */
 
-  animation: floatLoader 3s ease-in-out infinite;
+@media(max-width:1024px){
+
+  .hero-bg{
+    min-height:650px;
+    padding-top:70px;
+
+    justify-content:center;
+    text-align:center;
+  }
+
+  .hero-content{
+    flex:1 1 100%;
+  }
+
+  .burger-scene{
+    width:100%;
+    height:500px;
+  }
+
+  .products-grid{
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+  }
 
 }
-body{
-  padding-bottom:110px;
+
+@media(max-width:768px){
+
+  body{
+    padding-bottom:130px;
+  }
+
+  .navbar{
+    padding:18px;
+  }
+
+  .nav-links{
+    justify-content:center;
+    gap:14px;
+  }
+
+  .hero-bg{
+    padding-top:100px;
+    padding-bottom:50px;
+    gap:20px;
+  }
+
+  .hero-bg h1{
+    font-size:clamp(38px,11vw,65px) !important;
+    line-height:1.05;
+  }
+
+  .hero-bg p{
+    font-size:15px;
+  }
+/* =========================================
+   FIX BURGER MOBILE PERFECT
+   REEMPLAZA TODO TU @media DE BURGER
+========================================= */
+
+@media(max-width:900px){
+
+  .hero-bg{
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    padding-top:100px;
+    padding-bottom:40px;
+
+    gap:10px;
+
+    min-height:auto;
+  }
+
+  /* CONTENEDOR BURGER */
+
+  .burger-scene{
+
+    position:relative !important;
+
+    top:auto !important;
+    right:auto !important;
+
+    left:auto;
+
+    transform:none !important;
+
+    width:100%;
+    max-width:320px;
+
+    height:320px;
+
+    margin:auto;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow:visible;
+
+    perspective:900px;
+  }
+
+  /* BURGER */
+
+  .realistic-burger{
+
+    position:relative;
+
+    width:100%;
+    height:100%;
+
+    transform-style:preserve-3d;
+
+    transform:
+    scale(.55);
+
+    transform-origin:center center;
+  }
+
+  /* GLOW */
+
+  .burger-scene::before{
+
+    width:100%;
+    height:100%;
+
+    filter:blur(45px);
+
+    opacity:.7;
+  }
+
+  /* FIRE */
+
+  .fire{
+
+    width:55px;
+    height:110px;
+
+    bottom:70px;
+
+    filter:blur(6px);
+  }
+
+  .fire1{
+    left:90px;
+  }
+
+  .fire2{
+    left:145px;
+  }
+
+  .fire3{
+    left:200px;
+  }
+
+  /* SMOKE */
+
+  .smoke{
+
+    width:24px;
+    height:90px;
+
+    filter:blur(12px);
+  }
+
+  .smoke1{
+    left:110px;
+    top:40px;
+  }
+
+  .smoke2{
+    left:150px;
+    top:25px;
+  }
+
+  .smoke3{
+    left:190px;
+    top:45px;
+  }
+
+  /* SPARKS */
+
+  .spark{
+    width:5px;
+    height:5px;
+  }
+
+  .spark1{
+    left:120px;
+  }
+
+  .spark2{
+    left:160px;
+  }
+
+  .spark3{
+    left:210px;
+  }
+
 }
 
-a,
-button{
-  -webkit-tap-highlight-color: transparent;
+/* =========================================
+   PHONES
+========================================= */
+
+@media(max-width:600px){
+
+  .burger-scene{
+
+    max-width:260px;
+    height:260px;
+
+    margin-top:10px;
+  }
+
+  .realistic-burger{
+
+    transform:
+    scale(.43);
+  }
+
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media(max-width:480px){
+
+  .burger-scene{
+
+    max-width:220px;
+    height:220px;
+  }
+
+  .realistic-burger{
+
+    transform:
+    scale(.36);
+  }
+
+  /* FIRE SMALL */
+
+  .fire{
+
+    width:40px;
+    height:80px;
+
+    bottom:80px;
+  }
+
+  .fire1{
+    left:95px;
+  }
+
+  .fire2{
+    left:140px;
+  }
+
+  .fire3{
+    left:180px;
+  }
+
+}
+
+/* =========================================
+   EXTRA SMALL DEVICES
+========================================= */
+
+@media(max-width:360px){
+
+  .burger-scene{
+
+    max-width:180px;
+    height:180px;
+  }
+
+  .realistic-burger{
+
+    transform:
+    scale(.28);
+  }
+
 }
