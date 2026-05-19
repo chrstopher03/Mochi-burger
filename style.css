@@ -1382,176 +1382,130 @@ select:focus{
     font-size:15px;
   }
 /* =========================================
-   FIX BURGER MOBILE PERFECT
-   REEMPLAZA TODO TU @media DE BURGER
+   BURGER FIX FINAL
+   NO TAPA BOTONES NI CONTENIDO
 ========================================= */
 
-@media(max-width:900px){
+/* HERO */
+
+.hero-bg{
+  position:relative;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:40px;
+
+  flex-wrap:wrap;
+
+  overflow:hidden;
+}
+
+/* TEXTO Y BOTONES */
+
+.hero-content{
+  position:relative;
+  z-index:10;
+}
+
+/* BURGER DESKTOP */
+
+.burger-scene{
+
+  position:absolute;
+
+  right:-80px;
+  top:50%;
+
+  transform:
+  translateY(-50%)
+  scale(.82);
+
+  width:500px;
+  height:500px;
+
+  z-index:1;
+
+  pointer-events:none;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media(max-width:1024px){
 
   .hero-bg{
 
-    display:flex;
     flex-direction:column;
-
-    align-items:center;
-    justify-content:center;
 
     text-align:center;
 
-    padding-top:100px;
-    padding-bottom:40px;
-
-    gap:10px;
-
-    min-height:auto;
+    padding-bottom:20px;
   }
 
-  /* CONTENEDOR BURGER */
+  .hero-content{
+    width:100%;
+  }
 
   .burger-scene{
 
-    position:relative !important;
-
-    top:auto !important;
-    right:auto !important;
-
-    left:auto;
-
-    transform:none !important;
-
-    width:100%;
-    max-width:320px;
-
-    height:320px;
-
-    margin:auto;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    overflow:visible;
-
-    perspective:900px;
-  }
-
-  /* BURGER */
-
-  .realistic-burger{
-
     position:relative;
 
-    width:100%;
-    height:100%;
-
-    transform-style:preserve-3d;
+    top:auto;
+    right:auto;
 
     transform:
-    scale(.55);
+    scale(.45);
 
-    transform-origin:center center;
-  }
+    width:260px;
+    height:260px;
 
-  /* GLOW */
+    margin-top:-40px;
 
-  .burger-scene::before{
+    margin-bottom:-70px;
 
-    width:100%;
-    height:100%;
-
-    filter:blur(45px);
-
-    opacity:.7;
-  }
-
-  /* FIRE */
-
-  .fire{
-
-    width:55px;
-    height:110px;
-
-    bottom:70px;
-
-    filter:blur(6px);
-  }
-
-  .fire1{
-    left:90px;
-  }
-
-  .fire2{
-    left:145px;
-  }
-
-  .fire3{
-    left:200px;
-  }
-
-  /* SMOKE */
-
-  .smoke{
-
-    width:24px;
-    height:90px;
-
-    filter:blur(12px);
-  }
-
-  .smoke1{
-    left:110px;
-    top:40px;
-  }
-
-  .smoke2{
-    left:150px;
-    top:25px;
-  }
-
-  .smoke3{
-    left:190px;
-    top:45px;
-  }
-
-  /* SPARKS */
-
-  .spark{
-    width:5px;
-    height:5px;
-  }
-
-  .spark1{
-    left:120px;
-  }
-
-  .spark2{
-    left:160px;
-  }
-
-  .spark3{
-    left:210px;
+    z-index:1;
   }
 
 }
 
 /* =========================================
-   PHONES
+   MOBILE
 ========================================= */
 
-@media(max-width:600px){
+@media(max-width:768px){
+
+  .hero-bg{
+
+    padding-top:100px;
+
+    gap:10px;
+  }
+
+  .hero-content{
+
+    position:relative;
+
+    z-index:10;
+  }
 
   .burger-scene{
 
-    max-width:260px;
-    height:260px;
+    position:relative !important;
 
-    margin-top:10px;
-  }
-
-  .realistic-burger{
+    width:220px;
+    height:220px;
 
     transform:
-    scale(.43);
+    scale(.34);
+
+    margin-top:-70px;
+
+    margin-bottom:-120px;
+
+    pointer-events:none;
   }
 
 }
@@ -1564,56 +1518,182 @@ select:focus{
 
   .burger-scene{
 
-    max-width:220px;
-    height:220px;
-  }
-
-  .realistic-burger{
+    width:180px;
+    height:180px;
 
     transform:
-    scale(.36);
-  }
+    scale(.26);
 
-  /* FIRE SMALL */
+    margin-top:-90px;
 
-  .fire{
-
-    width:40px;
-    height:80px;
-
-    bottom:80px;
-  }
-
-  .fire1{
-    left:95px;
-  }
-
-  .fire2{
-    left:140px;
-  }
-
-  .fire3{
-    left:180px;
+    margin-bottom:-140px;
   }
 
 }
 
 /* =========================================
-   EXTRA SMALL DEVICES
+   EXTRA SMALL
 ========================================= */
 
 @media(max-width:360px){
 
   .burger-scene{
 
-    max-width:180px;
-    height:180px;
-  }
-
-  .realistic-burger{
+    width:150px;
+    height:150px;
 
     transform:
-    scale(.28);
+    scale(.22);
+
+    margin-top:-100px;
+
+    margin-bottom:-150px;
+  }
+
+}
+}
+
+/* =========================
+   BOTONES MOBILE FIX
+========================= */
+
+@media(max-width:768px){
+
+  .hero-buttons,
+  .buttons-container,
+  .cta-buttons{
+
+    display:flex;
+    flex-direction:row !important;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:12px;
+
+    flex-wrap:nowrap;
+  }
+
+  .hero-buttons button,
+  .buttons-container button,
+  .cta-buttons button,
+
+  .hero-buttons a,
+  .buttons-container a,
+  .cta-buttons a{
+
+    flex:1;
+
+    min-width:0;
+
+    padding:14px 10px;
+
+    font-size:14px;
+
+    white-space:nowrap;
+  }
+
+}
+
+/* TELEFONOS PEQUEÑOS */
+
+@media(max-width:480px){
+
+  .hero-buttons,
+  .buttons-container,
+  .cta-buttons{
+
+    gap:8px;
+  }
+
+  .hero-buttons button,
+  .buttons-container button,
+  .cta-buttons button,
+
+  .hero-buttons a,
+  .buttons-container a,
+  .cta-buttons a{
+
+    font-size:12px;
+
+    padding:12px 8px;
+  }
+
+}
+
+/* =========================
+   STATS RESPONSIVE
+========================= */
+
+.stats-box{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:16px;
+
+  flex-wrap:wrap;
+}
+
+.stat-card{
+
+  flex:1;
+
+  min-width:160px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+  .stats-box{
+
+    width:100%;
+
+    justify-content:center;
+  }
+
+  .stat-card{
+
+    flex:1 1 calc(50% - 10px);
+
+    min-width:140px;
+
+    padding:18px 14px;
+  }
+
+  .stat-card h3{
+
+    font-size:26px;
+  }
+
+  .stat-card p{
+
+    font-size:13px;
+  }
+
+}
+
+/* SMALL PHONES */
+
+@media(max-width:480px){
+
+  .stats-box{
+
+    gap:10px;
+  }
+
+  .stat-card{
+
+    min-width:120px;
+
+    padding:14px 10px;
+  }
+
+  .stat-card h3{
+
+    font-size:22px;
   }
 
 }
