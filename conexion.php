@@ -12,7 +12,11 @@ if($conn->connect_error){
 }
 
 ?>
-
+ <button
+            onclick="filterCategory('pizza')"
+            class="bg-zinc-800 hover:bg-zinc-700 px-5 py-3 rounded-2xl font-bold transition-all">
+            🍕 Pizzas
+          </button>
 
 CREATE DATABASE burger;
 
