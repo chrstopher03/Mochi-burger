@@ -1,4 +1,3 @@
-
 /* =========================
 ALERTAS BONITAS
 ========================= */
@@ -76,38 +75,38 @@ DATA
 const productList = [
 
   {
-    name:'Hamburguesa Clásica',
+    name:'Classic Burger',
     price:180
   },
 
   {
-    name:'Hamburguesa Doble',
+    name:'Double Smash',
     price:260
   },
 
   {
-    name:'Pizza Familiar',
+    name:'Doner',
     price:480
   },
 
   {
-    name:'Pizza Personal',
+    name:'Alitas bañadas en salsa especial',
     price:220
   },
 
   {
-    name:'Coca Cola',
+    name:'Sandwich de Pescado',
     price:45
   },
 
   {
-    name:'Papas Fritas',
+    name:'Sandwich de Pollo',
     price:90
   },
 
   {
-    name:'Hot Dog',
-    price:110
+    name:'Cocacola',
+    price:25
   }
 
 ];
@@ -213,11 +212,11 @@ function addIngredient(){
 
 }
 
-function renderInventory(){
+function renderInventory(filtered = inventory){
 
   inventoryTable.innerHTML = '';
 
-  inventory.forEach(item => {
+  filtered.forEach(item => {
 
     inventoryTable.innerHTML += `
 
@@ -455,6 +454,39 @@ function calculateTotal(){
   invoiceTotal.textContent =
     `C$${total}`;
 
+  calculateChange();
+
+}
+
+/* =========================
+VUELTO
+========================= */
+
+function calculateChange(){
+
+  const total =
+    Number(
+      invoiceTotal.textContent.replace('C$','')
+    );
+
+  const cash =
+    Number(
+      document.getElementById('cashReceived')?.value || 0
+    );
+
+  const change =
+    cash - total;
+
+  const changeElement =
+    document.getElementById('changeAmount');
+
+  if(changeElement){
+
+    changeElement.textContent =
+      `C$${change >= 0 ? change : 0}`;
+
+  }
+
 }
 
 /* =========================
@@ -562,6 +594,8 @@ function saveInvoice(){
 
   renderSoldProducts();
 
+  renderInvoiceHistory();
+
   updateStats();
 
   updateChart();
@@ -651,6 +685,8 @@ function deleteInvoice(id){
 
       renderSoldProducts();
 
+      renderInvoiceHistory();
+
       updateStats();
 
       updateChart();
@@ -664,6 +700,59 @@ function deleteInvoice(id){
 }
 
 /* =========================
+HISTORIAL FACTURAS
+========================= */
+
+function renderInvoiceHistory(){
+
+  const container =
+    document.getElementById('invoiceHistory');
+
+  if(!container){
+    return;
+  }
+
+  container.innerHTML = '';
+
+  [...invoices].reverse().forEach(invoice => {
+
+    container.innerHTML += `
+
+      <div class="bg-zinc-900 rounded-2xl p-5 flex justify-between items-center gap-4 flex-wrap">
+
+        <div>
+
+          <h1 class="text-orange-400 font-black text-xl">
+            ${invoice.id}
+          </h1>
+
+          <p class="text-zinc-400">
+            ${invoice.seller}
+          </p>
+
+          <p class="text-zinc-500">
+            ${invoice.date}
+          </p>
+
+        </div>
+
+        <div class="text-right">
+
+          <h1 class="text-green-400 text-2xl font-black">
+            ${invoice.total}
+          </h1>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+/* =========================
 PRODUCTOS VENDIDOS
 ========================= */
 
@@ -671,6 +760,10 @@ function renderSoldProducts(){
 
   const container =
     document.getElementById('soldProducts');
+
+  if(!container){
+    return;
+  }
 
   container.innerHTML = '';
 
@@ -729,6 +822,237 @@ function renderSoldProducts(){
         <h2 class="text-2xl font-black text-green-400 mt-4">
           ${invoice.total}
         </h2>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+/* =========================
+EXPORTAR INVENTARIO
+========================= */
+
+function exportInventory(){
+
+  if(inventory.length === 0){
+
+    showWarning('No hay inventario');
+
+    return;
+
+  }
+
+  let content = 'Ingrediente,Cantidad,Unidad\n';
+
+  inventory.forEach(item => {
+
+    content += `${item.name},${item.qty},${item.unit}\n`;
+
+  });
+
+  const blob =
+    new Blob([content], { type:'text/csv' });
+
+  const url =
+    URL.createObjectURL(blob);
+
+  const a =
+    document.createElement('a');
+
+  a.href = url;
+
+  a.download = 'inventario.csv';
+
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+}
+
+/* =========================
+WHATSAPP
+========================= */
+
+function sendWhatsApp(){
+
+  const client =
+    document.getElementById('clientName').value || 'Cliente';
+
+  const phone =
+    document.getElementById('clientPhone').value;
+
+  if(phone.trim() === ''){
+
+    showWarning('Ingrese número de teléfono');
+
+    return;
+
+  }
+
+  const rows =
+    document.querySelectorAll('#invoiceProducts tr');
+
+  let message =
+    `🍔 *MOCHI BURGERS*%0A%0A`;
+
+  message +=
+    `👤 Cliente: ${client}%0A%0A`;
+
+  let total = 0;
+
+  rows.forEach(row => {
+
+    const product =
+      row.querySelector('.productSelect').value;
+
+    const qty =
+      Number(
+        row.querySelector('.productQty').value
+      );
+
+    const price =
+      Number(
+        row.querySelector('.productPrice').value
+      );
+
+    const subtotal =
+      qty * price;
+
+    total += subtotal;
+
+    message +=
+      `• ${product} x${qty} = C$${subtotal}%0A`;
+
+  });
+
+  message +=
+    `%0A💰 TOTAL: C$${total}`;
+
+  window.open(
+    `https://wa.me/${phone}?text=${message}`,
+    '_blank'
+  );
+
+}
+
+/* =========================
+BORRAR FACTURAS
+========================= */
+
+function clearInvoices(){
+
+  Swal.fire({
+
+    title:'¿Borrar todas las facturas?',
+
+    icon:'warning',
+
+    background:'#18181b',
+
+    color:'#fff',
+
+    showCancelButton:true,
+
+    confirmButtonColor:'#ef4444',
+
+    cancelButtonColor:'#3f3f46',
+
+    confirmButtonText:'Borrar',
+
+    cancelButtonText:'Cancelar'
+
+  }).then(result => {
+
+    if(result.isConfirmed){
+
+      invoices = [];
+
+      salesData = [];
+
+      localStorage.removeItem('invoices');
+
+      localStorage.removeItem('salesData');
+
+      renderSoldProducts();
+
+      renderInvoiceHistory();
+
+      updateStats();
+
+      updateChart();
+
+      showSuccess('Facturas eliminadas');
+
+    }
+
+  });
+
+}
+
+/* =========================
+FILTRAR VENTAS
+========================= */
+
+function filterSalesByDate(){
+
+  const selectedDate =
+    document.getElementById('salesDate').value;
+
+  const container =
+    document.getElementById('filteredSales');
+
+  container.innerHTML = '';
+
+  if(selectedDate === ''){
+
+    showWarning('Seleccione fecha');
+
+    return;
+
+  }
+
+  const filtered =
+    invoices.filter(invoice => {
+
+      return invoice.date.includes(
+        new Date(selectedDate)
+        .toLocaleDateString()
+      );
+
+    });
+
+  if(filtered.length === 0){
+
+    container.innerHTML = `
+      <div class="bg-zinc-900 rounded-2xl p-5">
+        No hay ventas
+      </div>
+    `;
+
+    return;
+
+  }
+
+  filtered.forEach(invoice => {
+
+    container.innerHTML += `
+
+      <div class="bg-zinc-900 rounded-2xl p-5">
+
+        <h1 class="text-orange-400 text-xl font-black">
+          ${invoice.id}
+        </h1>
+
+        <p class="text-zinc-400">
+          ${invoice.seller}
+        </p>
+
+        <p class="text-green-400 font-black mt-2">
+          ${invoice.total}
+        </p>
 
       </div>
 
@@ -882,22 +1206,6 @@ async function downloadPDF(){
     y + 20
   );
 
-  doc.setFontSize(16);
-
-  doc.text(
-    'Gracias por su compra',
-    105,
-    y + 50,
-    { align:'center' }
-  );
-
-  doc.text(
-    'MOCHI BURGERS',
-    105,
-    y + 60,
-    { align:'center' }
-  );
-
   doc.save('factura-mochi-burgers.pdf');
 
   showSuccess('PDF descargado');
@@ -912,11 +1220,29 @@ function updateStats(){
 
   let total = 0;
 
+  let products = 0;
+
+  let topProductCounter = {};
+
   invoices.forEach(invoice => {
 
     total += Number(
       invoice.total.replace('C$','')
     );
+
+    invoice.products.forEach(product => {
+
+      products += product.qty;
+
+      if(!topProductCounter[product.name]){
+
+        topProductCounter[product.name] = 0;
+
+      }
+
+      topProductCounter[product.name] += product.qty;
+
+    });
 
   });
 
@@ -925,6 +1251,64 @@ function updateStats(){
 
   invoiceCount.textContent =
     invoices.length;
+
+  const productsCount =
+    document.getElementById('productsCount');
+
+  if(productsCount){
+
+    productsCount.textContent =
+      products;
+
+  }
+
+  const todaySales =
+    document.getElementById('todaySales');
+
+  if(todaySales){
+
+    todaySales.textContent =
+      `C$${total}`;
+
+  }
+
+  let topProduct = 'Ninguno';
+
+  let max = 0;
+
+  for(let product in topProductCounter){
+
+    if(topProductCounter[product] > max){
+
+      max = topProductCounter[product];
+
+      topProduct = product;
+
+    }
+
+  }
+
+  const topProductElement =
+    document.getElementById('topProduct');
+
+  if(topProductElement){
+
+    topProductElement.textContent =
+      topProduct;
+
+  }
+
+  const lastSale =
+    document.getElementById('lastSale');
+
+  if(lastSale){
+
+    lastSale.textContent =
+      invoices.length
+      ? invoices[invoices.length - 1].total
+      : '---';
+
+  }
 
 }
 
@@ -938,6 +1322,10 @@ function updateChart(){
 
   const ctx =
     document.getElementById('salesChart');
+
+  if(!ctx){
+    return;
+  }
 
   if(chart){
 
@@ -967,6 +1355,8 @@ function updateChart(){
     },
 
     options:{
+
+      responsive:true,
 
       plugins:{
         legend:{
@@ -999,6 +1389,334 @@ function updateChart(){
 }
 
 /* =========================
+PRINT
+========================= */
+function printTicket() {
+
+  const rows =
+    document.querySelectorAll('#invoiceProducts tr');
+
+  if(rows.length === 0){
+
+    showWarning('Agrega productos');
+
+    return;
+
+  }
+
+  const seller =
+    document.getElementById('clientName').value || 'Sin vendedor';
+
+  const phone =
+    document.getElementById('clientPhone').value || '-';
+
+  const date =
+    document.getElementById('invoiceDate').value ||
+    new Date().toLocaleDateString();
+
+  const invoiceNumber =
+    'FAC-' + Date.now();
+
+  let total = 0;
+
+  let productsHTML = '';
+
+  rows.forEach(row => {
+
+    const product =
+      row.querySelector('.productSelect').value;
+
+    const qty =
+      Number(
+        row.querySelector('.productQty').value
+      );
+
+    const price =
+      Number(
+        row.querySelector('.productPrice').value
+      );
+
+    const subtotal =
+      qty * price;
+
+    total += subtotal;
+
+    productsHTML += `
+
+      <tr>
+
+        <td class="product">
+          ${product}
+        </td>
+
+        <td class="center">
+          ${qty}
+        </td>
+
+        <td class="right">
+          C$${subtotal}
+        </td>
+
+      </tr>
+
+    `;
+
+  });
+
+  const ticket =
+    window.open('', '', 'width=320,height=900');
+
+  ticket.document.write(`
+
+    <!DOCTYPE html>
+
+    <html lang="es">
+
+    <head>
+
+      <meta charset="UTF-8">
+
+      <title>Ticket</title>
+
+      <style>
+
+        *{
+
+          margin:0;
+          padding:0;
+          box-sizing:border-box;
+
+        }
+
+        @page{
+
+          size:80mm auto;
+          margin:0;
+
+        }
+
+        body{
+
+          width:80mm;
+          font-family:monospace;
+          background:#fff;
+          color:#000;
+          padding:8px;
+          font-size:12px;
+
+        }
+
+        .center{
+
+          text-align:center;
+
+        }
+
+        .logo{
+
+          width:70px;
+          height:70px;
+          object-fit:cover;
+          border-radius:50%;
+          margin:auto;
+          display:block;
+          margin-bottom:8px;
+
+        }
+
+        h1{
+
+          font-size:20px;
+          margin-bottom:3px;
+
+        }
+
+        .subtitle{
+
+          font-size:12px;
+          margin-bottom:10px;
+
+        }
+
+        .line{
+
+          border-top:1px dashed #000;
+          margin:8px 0;
+
+        }
+
+        .info p{
+
+          margin:2px 0;
+
+        }
+
+        table{
+
+          width:100%;
+          border-collapse:collapse;
+          margin-top:5px;
+
+        }
+
+        th{
+
+          text-align:left;
+          padding-bottom:5px;
+          font-size:12px;
+
+        }
+
+        td{
+
+          padding:3px 0;
+          font-size:12px;
+
+        }
+
+        .product{
+
+          width:50%;
+
+        }
+
+        .right{
+
+          text-align:right;
+
+        }
+
+        .total{
+
+          margin-top:10px;
+          font-size:18px;
+          font-weight:bold;
+          text-align:right;
+
+        }
+
+        .footer{
+
+          text-align:center;
+          margin-top:15px;
+          font-size:11px;
+
+        }
+
+      </style>
+
+    </head>
+
+    <body>
+
+      <img src="1.jpeg" class="logo">
+
+      <div class="center">
+
+        <h1>MOCHI BURGERS</h1>
+
+        <p class="subtitle">
+          FACTURA DE VENTA
+        </p>
+
+      </div>
+
+      <div class="line"></div>
+
+      <div class="info">
+
+        <p>
+          <b>Factura:</b>
+          ${invoiceNumber}
+        </p>
+
+        <p>
+          <b>Fecha:</b>
+          ${date}
+        </p>
+
+        <p>
+          <b>Vendedor:</b>
+          ${seller}
+        </p>
+
+        <p>
+          <b>Tel:</b>
+          ${phone}
+        </p>
+
+      </div>
+
+      <div class="line"></div>
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Producto</th>
+            <th>Cant</th>
+            <th class="right">
+              Total
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          ${productsHTML}
+
+        </tbody>
+
+      </table>
+
+      <div class="line"></div>
+
+      <div class="total">
+
+        TOTAL: C$${total}
+
+      </div>
+
+      <div class="line"></div>
+
+      <div class="footer">
+
+        <p>Gracias por su compra</p>
+
+        <p>MOCHI BURGERS</p>
+
+      </div>
+
+      <script>
+
+        window.onload = () => {
+
+          window.print();
+
+          setTimeout(() => {
+
+            window.close();
+
+          }, 500);
+
+        }
+
+      <\/script>
+
+    </body>
+
+    </html>
+
+  `);
+
+  ticket.document.close();
+
+}
+/* =========================
 EVENTOS
 ========================= */
 
@@ -1009,6 +1727,30 @@ document.addEventListener('input', e => {
   ){
 
     calculateTotal();
+
+  }
+
+  if(
+    e.target.id === 'cashReceived'
+  ){
+
+    calculateChange();
+
+  }
+
+  if(
+    e.target.id === 'searchInventory'
+  ){
+
+    const text =
+      e.target.value.toLowerCase();
+
+    const filtered =
+      inventory.filter(item =>
+        item.name.toLowerCase().includes(text)
+      );
+
+    renderInventory(filtered);
 
   }
 
@@ -1040,261 +1782,21 @@ updateChart();
 
 renderSoldProducts();
 
+renderInvoiceHistory();
+
 addProductRow();
-
-function printTicket() {
-
-  const client =
-    document.getElementById("clientName").value || "Cliente";
-
-  const phone =
-    document.getElementById("clientPhone").value || "-";
-
-  const date =
-    document.getElementById("invoiceDate").value ||
-    new Date().toLocaleDateString();
-
-  const rows =
-    document.querySelectorAll("#invoiceProducts tr");
-
-  let productsHTML = "";
-
-  let total = 0;
-
-  rows.forEach(row => {
-
-    const inputs = row.querySelectorAll("input, select");
-
-    if(inputs.length >= 3){
-
-      const product =
-        inputs[0].value || "Producto";
-
-      const qty =
-        parseFloat(inputs[1].value) || 0;
-
-      const price =
-        parseFloat(inputs[2].value) || 0;
-
-      const subtotal = qty * price;
-
-      total += subtotal;
-
-      productsHTML += `
-
-        <tr>
-
-          <td style="padding:4px 0;">
-            ${product}
-          </td>
-
-          <td style="text-align:center;">
-            ${qty}
-          </td>
-
-          <td style="text-align:right;">
-            C$${subtotal.toFixed(2)}
-          </td>
-
-        </tr>
-
-      `;
-    }
-
-  });
-
-  const ticket = window.open("", "", "width=350,height=700");
-
-  ticket.document.write(`
-
-    <html>
-
-    <head>
-
-      <title>Ticket</title>
-
-      <style>
-
-        body{
-
-          font-family: monospace;
-          width: 280px;
-          margin:auto;
-          padding:10px;
-          color:#000;
-
-        }
-
-        .center{
-
-          text-align:center;
-
-        }
-
-        img{
-
-          width:80px;
-          height:80px;
-          object-fit:cover;
-          border-radius:50%;
-          margin-bottom:10px;
-
-        }
-
-        h1{
-
-          margin:0;
-          font-size:22px;
-
-        }
-
-        p{
-
-          margin:3px 0;
-          font-size:12px;
-
-        }
-
-        table{
-
-          width:100%;
-          margin-top:10px;
-          border-collapse:collapse;
-
-        }
-
-        td{
-
-          font-size:12px;
-          padding:2px 0;
-
-        }
-
-        .line{
-
-          border-top:1px dashed #000;
-          margin:8px 0;
-
-        }
-
-        .total{
-
-          text-align:right;
-          font-size:18px;
-          font-weight:bold;
-          margin-top:10px;
-
-        }
-
-        @media print{
-
-          body{
-
-            width:80mm;
-
-          }
-
-        }
-
-      </style>
-
-    </head>
-
-    <body>
-
-      <div class="center">
-
-        <img src="1.jpeg">
-
-        <h1>MOCHI BURGERS</h1>
-
-        <p>FACTURA DE VENTA</p>
-
-      </div>
-
-      <div class="line"></div>
-
-      <p><b>Cliente:</b> ${client}</p>
-
-      <p><b>Tel:</b> ${phone}</p>
-
-      <p><b>Fecha:</b> ${date}</p>
-
-      <div class="line"></div>
-
-      <table>
-
-        <thead>
-
-          <tr>
-
-            <td><b>Prod</b></td>
-            <td><b>Cant</b></td>
-            <td><b>Total</b></td>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          ${productsHTML}
-
-        </tbody>
-
-      </table>
-
-      <div class="line"></div>
-
-      <div class="total">
-
-        TOTAL: C$${total.toFixed(2)}
-
-      </div>
-
-      <div class="line"></div>
-
-      <p class="center">
-
-        Gracias por su compra
-
-      </p>
-
-      <script>
-
-        window.onload = () => {
-
-          window.print();
-
-          setTimeout(() => {
-
-            window.close();
-
-          }, 500);
-
-        }
-
-      <\/script>
-
-    </body>
-
-    </html>
-
-  `);
-
-  ticket.document.close();
-
-}
 
 window.addEventListener("load", () => {
 
   setTimeout(() => {
 
-    const nav = document.getElementById("bottomNav");
+    const nav =
+      document.getElementById("bottomNav");
 
     if(nav){
 
       nav.classList.remove("opacity-0");
+
       nav.classList.remove("translate-y-20");
 
     }

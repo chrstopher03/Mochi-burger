@@ -1,10 +1,9 @@
-
 const products = [
 
 {
   id: 1,
   name: 'Classic Burger',
-  description: 'Carne 100% res, queso cheddar y salsa especial.',
+  description: 'HAMBURGUESAS ARTESANALES (pan casero, salsa casera, mermelada de cebolla y bacon, tomate, lechuga, queso cheddar Acompañadas de papa fritas)',
   price:240,
   category: 'burger',
   popular: true,
@@ -19,7 +18,7 @@ const products = [
 {
   id: 2,
   name: 'Double Smash',
-  description: 'Doble carne smash con queso premium.',
+  description: 'Hamburguesa tradicional (pan, lechuga, mayonesa, tomate, cebolla, queso amarillo acompañadas de papas fritas) ',
   price: 12,
   category: 'burger',
   popular: true,
@@ -33,7 +32,7 @@ const products = [
 {
   id: 3,
   name: 'Doner',
-  description: 'Doner especial con salsa premium.',
+  description: 'Doners (pan pita, lechuga, tomate, salsas de la casa, Pollo o Res acompañado de papas fritas) ',
   price: 15,
   category: 'pizza',
   popular: true,
@@ -47,7 +46,7 @@ const products = [
 {
   id: 4,
   name: 'Alitas',
-  description: 'Alitas bañadas en salsa especial.',
+  description: 'Alitas (BBQ, Búfalo, mango habanero, ranch todas acompañadas con papas fritas) ',
   price: 18,
   category: 'pizza',
   image: '5.jpeg',
@@ -63,7 +62,7 @@ const products = [
 {
   id: 5,
   name: 'Sandwich de Pescado',
-  description: 'Sandwich premium de pescado.',
+  description: 'Sándwich de pescado ( filete de pescado, ensalada de cole, salsa casera papas fritas) ',
   price: 4,
   category: 'fries',
   image: '6.jpeg',
@@ -74,7 +73,7 @@ const products = [
 {
   id: 6,
   name: 'Sandwich de Pollo',
-  description: 'Sandwich crispy de pollo.',
+  description: 'Sándwich de pollo hot (filete de pollo empanizado reahogado en salsa picante de la casa, pepinillo, aderezo casero, papas fritas)',
   price: 3,
   category: 'drink',
   image: '7.jpeg',
@@ -495,156 +494,247 @@ function removeItem(index) {
 }
 
 /* =========================
-ENVIAR PEDIDO
+ABRIR MODAL PEDIDO
 ========================= */
+
+function openOrderTypeModal() {
+
+  if (cart.length === 0) {
+
+    showAlert("Agrega productos primero", "error");
+    return;
+
+  }
+
+  document
+    .getElementById("orderTypeModal")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("orderTypeModal")
+    .classList.add("flex");
+
+}
+
+function closeOrderTypeModal() {
+
+  document
+    .getElementById("orderTypeModal")
+    .classList.add("hidden");
+
+  document
+    .getElementById("orderTypeModal")
+    .classList.remove("flex");
+
+}
+
+function showDeliveryForm() {
+
+  document
+    .getElementById("deliveryForm")
+    .classList.remove("hidden");
+
+}
 
 /* =========================
-ENVIAR PEDIDO
+GENERAR MENSAJE
 ========================= */
 
-function sendOrder() {
+function generateCartMessage(type = "Restaurante") {
+
+  const now = new Date();
+
+  const fecha =
+    `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
+
+  const hora =
+    now.toLocaleTimeString('es-NI', {
+      hour:'numeric',
+      minute:'2-digit',
+      second:'2-digit',
+      hour12:true
+    });
+
+  let message = `PEDIDO MOCHI BURGERS%0A`;
+
+  message += `--------------------------------%0A`;
+
+  message += `Fecha: ${fecha}%0A`;
+
+  message += `Hora : ${hora}%0A`;
+
+  message += `Tipo : ${type}%0A`;
+
+  message += `--------------------------------%0A`;
+
+  message += `Producto              Cant  Total%0A`;
+
+  message += `--------------------------------%0A`;
+
+  let total = 0;
+
+  cart.forEach(item => {
+
+    const subtotal =
+      item.finalPrice * item.quantity;
+
+    total += subtotal;
+
+    message += `${item.name}  ${item.quantity}  C$${subtotal}%0A`;
+
+    if(item.extras && item.extras.length > 0){
+
+      item.extras.forEach(extra => {
+
+        message += `   + ${extra.name}%0A`;
+
+      });
+
+    }
+
+    if(item.removed && item.removed.length > 0){
+
+      item.removed.forEach(remove => {
+
+        message += `   - Sin ${remove}%0A`;
+
+      });
+
+    }
+
+  });
+
+  message += `--------------------------------%0A`;
+
+  if(discount > 0){
+
+    message += `Descuento: -C$${discount}%0A`;
+
+  }
+
+  message += `TOTAL: C$${total - discount}%0A`;
+
+  message += `--------------------------------%0A%0A`;
+
+  return message;
+
+}
+
+/* =========================
+PEDIDO RESTAURANTE
+========================= */
+
+function sendRestaurantOrder() {
 
   const tableNumber =
     document.getElementById('tableNumber').value || 'Sin mesa';
 
-  if (cart.length === 0) {
+  let message =
+    generateCartMessage("Restaurante");
 
-    showAlert('Agrega productos primero', 'error');
+  message += `🍽️ Pedido en restaurante%0A`;
+
+  message += `🪑 Mesa: ${tableNumber}%0A%0A`;
+
+  message += `Quiero coordinar entrega`;
+
+  const phone = '50582337242';
+
+  window.open(
+    `https://wa.me/${phone}?text=${message}`,
+    '_blank'
+  );
+
+  document
+    .getElementById('successSound')
+    .play();
+
+  showAlert(
+    `Pedido enviado Mesa #${tableNumber}`,
+    'success'
+  );
+
+  cart = [];
+
+  discount = 0;
+
+  renderCart();
+
+  closeOrderTypeModal();
+
+}
+
+/* =========================
+PEDIDO DELIVERY
+========================= */
+
+function sendDeliveryOrder() {
+
+  const customerName =
+    document.getElementById("deliveryName").value;
+
+  const customerPhone =
+    document.getElementById("deliveryPhone").value;
+
+  const customerAddress =
+    document.getElementById("deliveryAddress").value;
+
+  const customerReference =
+    document.getElementById("deliveryReference").value;
+
+  if (
+    !customerName ||
+    !customerPhone ||
+    !customerAddress
+  ) {
+
+    showAlert(
+      "Completa todos los datos",
+      "error"
+    );
 
     return;
 
   }
 
-  Swal.fire({
+  let message =
+    generateCartMessage("Delivery");
 
-    title:'Enviar pedido',
+  message += `🛵 PEDIDO A DOMICILIO%0A`;
 
-    text:'Tu pedido será enviado a través de nuestro WhatsApp',
+  message += `👤 Cliente: ${customerName}%0A`;
 
-    icon:'info',
+  message += `📞 Teléfono: ${customerPhone}%0A`;
 
-    background:'#18181b',
+  message += `📍 Dirección: ${customerAddress}%0A`;
 
-    color:'#fff',
+  message += `🧭 Referencia: ${customerReference}%0A%0A`;
 
-    confirmButtonColor:'#22c55e',
+  message += `Quiero coordinar entrega`;
 
-    cancelButtonColor:'#ef4444',
+  const phone = '50582337242';
 
-    confirmButtonText:'Enviar pedido',
+  window.open(
+    `https://wa.me/${phone}?text=${message}`,
+    '_blank'
+  );
 
-    cancelButtonText:'Cancelar',
+  document
+    .getElementById('successSound')
+    .play();
 
-    showCancelButton:true
+  showAlert(
+    `Pedido enviado correctamente`,
+    'success'
+  );
 
-  }).then((result) => {
+  cart = [];
 
-    if(result.isConfirmed){
+  discount = 0;
 
-      const now = new Date();
+  renderCart();
 
-      const fecha =
-        `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
-
-      const hora =
-        now.toLocaleTimeString('es-NI', {
-          hour:'numeric',
-          minute:'2-digit',
-          second:'2-digit',
-          hour12:true
-        });
-
-      let message = `PEDIDO MOCHI BURGERS%0A`;
-
-      message += `--------------------------------%0A`;
-
-      message += `Mesa : ${tableNumber}%0A`;
-
-      message += `Fecha: ${fecha}%0A`;
-
-      message += `Hora : ${hora}%0A`;
-
-      message += `--------------------------------%0A`;
-
-      message += `Producto              Cant  Total%0A`;
-
-      message += `--------------------------------%0A`;
-
-      let total = 0;
-
-      cart.forEach(item => {
-
-        const subtotal =
-          item.finalPrice * item.quantity;
-
-        total += subtotal;
-
-        // PRODUCTO
-        message += `${item.name}  ${item.quantity}  C$${subtotal}%0A`;
-
-        // EXTRAS
-        if(item.extras && item.extras.length > 0){
-
-          item.extras.forEach(extra => {
-
-            message += `   + ${extra.name}%0A`;
-
-          });
-
-        }
-
-        // INGREDIENTES QUITADOS
-        if(item.removed && item.removed.length > 0){
-
-          item.removed.forEach(remove => {
-
-            message += `   - Sin ${remove}%0A`;
-
-          });
-
-        }
-
-      });
-
-      message += `--------------------------------%0A`;
-
-      if(discount > 0){
-
-        message += `Descuento: -C$${discount}%0A`;
-
-      }
-
-      message += `TOTAL: C$${total - discount}%0A`;
-
-      message += `--------------------------------%0A%0A`;
-
-      message += `Quiero coordinar entrega`;
-
-      const phone = '50582337242';
-
-      window.open(
-        `https://wa.me/${phone}?text=${message}`,
-        '_blank'
-      );
-
-      document
-        .getElementById('successSound')
-        .play();
-
-      showAlert(
-        `Pedido enviado Mesa #${tableNumber}`,
-        'success'
-      );
-
-      cart = [];
-
-      discount = 0;
-
-      renderCart();
-
-    }
-
-  });
+  closeOrderTypeModal();
 
 }
 
@@ -811,6 +901,7 @@ window.addEventListener("load", () => {
   }, 80);
 
 });
+
 /* =========================
 PWA INSTALL APP
 ========================= */
@@ -835,8 +926,6 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 installBtn.addEventListener("click", async () => {
 
-  /* SI EXISTE INSTALL NATIVO */
-
   if(deferredPrompt){
 
     deferredPrompt.prompt();
@@ -858,8 +947,6 @@ installBtn.addEventListener("click", async () => {
     }
 
   }
-
-  /* SI NO EXISTE */
 
   else {
 
@@ -890,6 +977,7 @@ installBtn.addEventListener("click", async () => {
   }
 
 });
+
 /* =========================
 REGISTER SW + AUTO UPDATE
 ========================= */
@@ -904,11 +992,7 @@ if("serviceWorker" in navigator){
 
       console.log("Service Worker registrado");
 
-      /* CHECK UPDATE */
-
       registration.update();
-
-      /* DETECT NEW VERSION */
 
       registration.onupdatefound = () => {
 
@@ -917,8 +1001,6 @@ if("serviceWorker" in navigator){
         newWorker.onstatechange = () => {
 
           if(newWorker.state === "installed"){
-
-            /* SI YA EXISTE APP ABIERTA */
 
             if(navigator.serviceWorker.controller){
 

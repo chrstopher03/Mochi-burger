@@ -6,19 +6,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>MOCHI BURGERS</title>
-  <link rel="icon" href="1.jpeg">
+
+<link rel="icon" href="1.jpeg">
+
 <link rel="stylesheet" href="estilos.css">
+
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-
 
 </head>
 
@@ -32,15 +35,69 @@
 
     <img
       src="1.jpeg"
-      class="w-40 h-40 object-contain mx-auto mb-5 rounded-full">
+      class="w-40 h-40 object-contain mx-auto mb-5 rounded-full shadow-2xl border-4 border-orange-500">
 
     <h1 class="text-6xl font-black bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
       MOCHI BURGERS
     </h1>
 
     <p class="text-zinc-400 mt-3 text-xl">
-      Sistema Premium de Facturación
+      Sistema de Facturación
     </p>
+
+  </div>
+
+  <!-- STATS PREMIUM -->
+
+  <div class="grid md:grid-cols-4 gap-5 mb-6">
+
+    <div class="card p-5">
+      <p class="text-zinc-400">Ventas Totales</p>
+
+      <h1
+        id="salesAmount"
+        class="text-4xl font-black text-green-400 mt-2">
+
+        C$0
+
+      </h1>
+    </div>
+
+    <div class="card p-5">
+      <p class="text-zinc-400">Facturas</p>
+
+      <h1
+        id="invoiceCount"
+        class="text-4xl font-black text-orange-400 mt-2">
+
+        0
+
+      </h1>
+    </div>
+
+    <div class="card p-5">
+      <p class="text-zinc-400">Productos Vendidos</p>
+
+      <h1
+        id="productsCount"
+        class="text-4xl font-black text-cyan-400 mt-2">
+
+        0
+
+      </h1>
+    </div>
+
+    <div class="card p-5">
+      <p class="text-zinc-400">Ganancias Hoy</p>
+
+      <h1
+        id="todaySales"
+        class="text-4xl font-black text-pink-400 mt-2">
+
+        C$0
+
+      </h1>
+    </div>
 
   </div>
 
@@ -52,21 +109,41 @@
 
     <div class="lg:col-span-2 card p-6">
 
-      <div class="flex justify-between items-center mb-6">
+      <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
 
         <h2 class="text-3xl font-black text-orange-400">
           Inventario
         </h2>
 
-        <button
-          onclick="openInventoryModal()"
-          class="btn bg-orange-500 hover:bg-orange-600 px-5 py-3 rounded-2xl font-bold">
+        <div class="flex gap-3 flex-wrap">
 
-          + Agregar Ingrediente
+          <button
+            onclick="openInventoryModal()"
+            class="btn bg-orange-500 hover:bg-orange-600 px-5 py-3 rounded-2xl font-bold">
 
-        </button>
+            + Ingrediente
+
+          </button>
+
+          <button
+            onclick="exportInventory()"
+            class="btn bg-cyan-500 hover:bg-cyan-600 px-5 py-3 rounded-2xl font-bold">
+
+            Exportar
+
+          </button>
+
+        </div>
 
       </div>
+
+      <!-- BUSCADOR -->
+
+      <input
+        type="text"
+        id="searchInventory"
+        placeholder="Buscar ingrediente..."
+        class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 mb-6">
 
       <div class="overflow-auto">
 
@@ -99,46 +176,41 @@
     <div class="card p-6">
 
       <h2 class="text-3xl font-black text-green-400 mb-6">
-        Ventas
+        Estadísticas
       </h2>
 
-      <div class="space-y-5">
+      <canvas id="salesChart"></canvas>
 
-        <div class="bg-zinc-900 rounded-2xl p-5">
+      <div class="mt-8 space-y-4">
 
+        <div class="bg-zinc-900 rounded-2xl p-4">
           <p class="text-zinc-400">
-            Total Ventas
+            Producto Más Vendido
           </p>
 
           <h1
-            id="salesAmount"
-            class="text-4xl font-black text-green-400 mt-2">
+            id="topProduct"
+            class="text-2xl font-black text-yellow-400 mt-2">
 
-            C$0
+            Ninguno
 
           </h1>
-
         </div>
 
-        <div class="bg-zinc-900 rounded-2xl p-5">
-
+        <div class="bg-zinc-900 rounded-2xl p-4">
           <p class="text-zinc-400">
-            Facturas
+            Última Venta
           </p>
 
           <h1
-            id="invoiceCount"
-            class="text-4xl font-black text-orange-400 mt-2">
+            id="lastSale"
+            class="text-xl font-black text-cyan-400 mt-2">
 
-            0
-
+            ---
           </h1>
-
         </div>
 
       </div>
-
-      <canvas id="salesChart" class="mt-8"></canvas>
 
     </div>
 
@@ -148,7 +220,7 @@
 
   <div class="card p-6 mt-6">
 
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
 
       <h2 class="text-3xl font-black text-yellow-400">
         Facturador
@@ -166,12 +238,13 @@
 
     <!-- DATOS -->
 
-    <div class="grid md:grid-cols-3 gap-4 mb-6">
+    <div class="grid md:grid-cols-4 gap-4 mb-6">
 
       <input
         id="clientName"
         type="text"
         value="Christopher"
+        placeholder="Cliente"
         class="bg-zinc-900 border border-zinc-700 rounded-2xl p-4">
 
       <input
@@ -184,6 +257,16 @@
         id="invoiceDate"
         type="date"
         class="bg-zinc-900 border border-zinc-700 rounded-2xl p-4">
+
+      <select
+        id="paymentMethod"
+        class="bg-zinc-900 border border-zinc-700 rounded-2xl p-4">
+
+        <option>Efectivo</option>
+        <option>Transferencia</option>
+        <option>Tarjeta</option>
+
+      </select>
 
     </div>
 
@@ -215,18 +298,51 @@
 
     <!-- TOTAL -->
 
-    <div class="flex justify-end mt-6">
+    <div class="grid md:grid-cols-2 gap-6 mt-6">
 
-      <div class="bg-zinc-900 rounded-2xl p-6 w-full max-w-sm">
+      <div class="bg-zinc-900 rounded-2xl p-6">
 
-        <div class="flex justify-between text-2xl font-black">
+        <p class="text-zinc-400 mb-3">
+          Dinero Recibido
+        </p>
 
-          <span>Total:</span>
+        <input
+          type="number"
+          id="cashReceived"
+          placeholder="C$0"
+          class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl p-4">
 
-          <span id="invoiceTotal" class="text-green-400">
+        <div class="mt-4 text-2xl font-black">
+
+          Vuelto:
+          <span id="changeAmount" class="text-cyan-400">
             C$0
           </span>
 
+        </div>
+
+      </div>
+
+      <div class="bg-zinc-900 rounded-2xl p-6 flex items-center justify-between">
+
+        <div>
+
+          <p class="text-zinc-400">
+            Total
+          </p>
+
+          <h1
+            id="invoiceTotal"
+            class="text-5xl font-black text-green-400 mt-2">
+
+            C$0
+
+          </h1>
+
+        </div>
+
+        <div class="text-6xl">
+          🍔
         </div>
 
       </div>
@@ -252,14 +368,48 @@
         Descargar PDF
 
       </button>
-<button
-  onclick="printTicket()"
-  class="btn bg-cyan-500 hover:bg-cyan-600 px-6 py-4 rounded-2xl font-black">
 
-  Imprimir Ticket
+      <button
+        onclick="printTicket()"
+        class="btn bg-cyan-500 hover:bg-cyan-600 px-6 py-4 rounded-2xl font-black">
 
-</button>
+        Imprimir Ticket
+
+      </button>
+
+      <button
+        onclick="sendWhatsApp()"
+        class="btn bg-green-600 hover:bg-green-700 px-6 py-4 rounded-2xl font-black">
+
+        WhatsApp
+
+      </button>
+
     </div>
+
+  </div>
+
+  <!-- HISTORIAL -->
+
+  <div class="card p-6 mt-6">
+
+    <div class="flex justify-between items-center mb-6">
+
+      <h2 class="text-3xl font-black text-pink-400">
+        Historial de Facturas
+      </h2>
+
+      <button
+        onclick="clearInvoices()"
+        class="btn bg-red-500 hover:bg-red-600 px-5 py-3 rounded-2xl font-bold">
+
+        Borrar Todo
+
+      </button>
+
+    </div>
+
+    <div id="invoiceHistory" class="space-y-4"></div>
 
   </div>
 
@@ -275,13 +425,46 @@
 
   </div>
 
+  <!-- VENTAS POR DIA -->
+
+  <div class="bg-zinc-900 rounded-3xl p-6 mt-10">
+
+    <h1 class="text-3xl font-black mb-6 text-orange-400">
+      Ventas por Día
+    </h1>
+
+    <div class="flex flex-col md:flex-row gap-4">
+
+      <input
+        type="date"
+        id="salesDate"
+        class="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 w-full">
+
+      <button
+        onclick="filterSalesByDate()"
+        class="bg-orange-500 hover:bg-orange-600 px-6 py-4 rounded-2xl font-black">
+
+        Filtrar Ventas
+
+      </button>
+
+    </div>
+
+    <div
+      id="filteredSales"
+      class="mt-6 space-y-4">
+
+    </div>
+
+  </div>
+
 </div>
 
-<!-- MODAL -->
+<!-- MODAL INVENTARIO -->
 
 <div
   id="inventoryModal"
-  class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4">
+  class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4 z-[999999]">
 
   <div class="card p-6 w-full max-w-lg">
 
@@ -338,49 +521,16 @@
   </div>
 
 </div>
-<div class="bg-zinc-900 rounded-3xl p-6 mt-10">
 
-  <h1 class="text-3xl font-black mb-6 text-orange-400">
-    Ventas por Día
-  </h1>
-
-  <div class="flex flex-col md:flex-row gap-4">
-
-    <input
-      type="date"
-      id="salesDate"
-      class="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 w-full">
-
-    <button
-      onclick="filterSalesByDate()"
-      class="bg-orange-500 hover:bg-orange-600 px-6 py-4 rounded-2xl font-black">
-
-      Filtrar Ventas
-
-    </button>
-
-  </div>
-
-  <div
-    id="filteredSales"
-    class="mt-6 space-y-4">
-
-  </div>
-
-</div>
- <!-- MOBILE APP NAVBAR -->
+<!-- NAVBAR MOBILE -->
 
 <nav
 id="bottomNav"
 class="fixed bottom-0 left-0 w-full z-[99999] opacity-0 translate-y-20 transition-all duration-700">
 
-  <!-- BACKGROUND -->
-
   <div
     class="absolute inset-0 bg-[#0b0b0b]/95 backdrop-blur-2xl border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,.45)]">
   </div>
-
-  <!-- CONTENT -->
 
   <div class="relative h-[90px] flex">
 
@@ -389,8 +539,6 @@ class="fixed bottom-0 left-0 w-full z-[99999] opacity-0 translate-y-20 transitio
     <a
       href="index.html"
       class="flex-1 flex flex-col items-center justify-center active:scale-95 transition-all">
-
-      <!-- ICON -->
 
       <div
         class="w-16 h-16 rounded-[24px] bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-[0_10px_30px_rgba(255,80,0,.35)]">
@@ -423,8 +571,6 @@ class="fixed bottom-0 left-0 w-full z-[99999] opacity-0 translate-y-20 transitio
       href="registrador.html"
       class="flex-1 flex flex-col items-center justify-center active:scale-95 transition-all">
 
-      <!-- ICON -->
-
       <div
         class="w-16 h-16 rounded-[24px] bg-zinc-900 border border-zinc-700 flex items-center justify-center shadow-xl">
 
@@ -453,13 +599,8 @@ class="fixed bottom-0 left-0 w-full z-[99999] opacity-0 translate-y-20 transitio
   </div>
 
 </nav>
-<!-- PON ESTO ARRIBA DE TU SCRIPT -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script src="funciones.js">
-
-
-</script>
+<script src="funciones.js"></script>
 
 </body>
 </html>
