@@ -1,473 +1,663 @@
-# menu.html
-
-```html
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Burger Premium</title>
+<title>Mochi Burgers</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+<style>
 
-  <!-- CSS PREMIUM -->
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
-  <style>
+body{
+    background:#111;
+    overflow-x:hidden;
+}
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+/* =========================
+PORTADA
+========================= */
+.hero{
+    width:100%;
+    min-height:100vh;
+
+    background:
+    linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
+    url('10.JPEG');
+
+    background-size:contain;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-color:#000;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+.hero-content h1{
+    color:#ffb703;
+    font-size:80px;
+    margin-bottom:15px;
+}
+
+.hero-content p{
+    color:white;
+    font-size:22px;
+    margin-bottom:40px;
+}
+
+.open-menu-btn{
+    padding:18px 45px;
+    border:none;
+    border-radius:50px;
+    background:#ffb703;
+    color:#111;
+    font-size:20px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.open-menu-btn:hover{
+    transform:scale(1.05);
+    background:#ffd166;
+}
+
+/* =========================
+MENU
+========================= */
+
+.menu-container{
+    position:fixed;
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100vh;
+
+    background:#111;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.4s;
+    z-index:999;
+
+    overflow-y:auto;
+}
+
+.menu-container.active{
+    opacity:1;
+    visibility:visible;
+}
+
+/* =========================
+HEADER MENU
+========================= */
+
+.menu-header{
+    width:100%;
+    padding:20px 40px;
+    background:#0a0a0a;
+    border-bottom:2px solid rgba(255,183,3,.2);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo-area{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.logo-area img{
+    width:70px;
+    height:70px;
+    object-fit:cover;
+    border-radius:50%;
+    border:3px solid #ffb703;
+    background:white;
+}
+
+.logo-area h1{
+    color:#ffb703;
+    font-size:32px;
+    font-weight:700;
+    letter-spacing:2px;
+}
+
+/* =========================
+BOTON CERRAR
+========================= */
+
+.close-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+
+    width:50px;
+    height:50px;
+
+    border:none;
+    border-radius:50%;
+
+    background:#ffb703;
+
+    color:#111;
+    font-size:28px;
+    font-weight:bold;
+
+    cursor:pointer;
+    z-index:1000;
+}
+
+/* =========================
+LIBRO
+========================= */
+
+.book{
+    width:90%;
+    max-width:1200px;
+
+    margin:40px auto;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    background:#0f0f0f;
+
+    border-radius:25px;
+    overflow:hidden;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+
+    animation:zoom .5s ease;
+}
+
+@keyframes zoom{
+
+    from{
+        transform:scale(.8);
+        opacity:0;
     }
 
-    :root{
-      --primary:#ff5a1f;
-      --secondary:#ffb800;
-      --dark:#050505;
-      --card:rgba(15,15,15,.78);
-      --glass:rgba(255,255,255,.06);
-
-      --success:#22c55e;
-      --danger:#ef4444;
-
-      --shadow:
-        0 20px 60px rgba(0,0,0,.45);
-
-      --orange-glow:
-        0 0 25px rgba(255,90,31,.35);
-
-      --radius:28px;
+    to{
+        transform:scale(1);
+        opacity:1;
     }
 
-    html{
-      scroll-behavior:smooth;
+}
+
+.page{
+    padding:40px;
+}
+
+.page:first-child{
+    border-right:2px solid rgba(255,255,255,.08);
+}
+
+/* =========================
+TITULOS
+========================= */
+
+.page-title{
+    text-align:center;
+    color:#ffb703;
+    font-size:38px;
+    margin-bottom:40px;
+}
+
+/* =========================
+ITEMS
+========================= */
+
+.menu-item{
+    display:flex;
+    gap:18px;
+    margin-bottom:30px;
+    align-items:center;
+}
+
+.menu-item img{
+    width:110px;
+    height:110px;
+    object-fit:cover;
+    border-radius:20px;
+    border:3px solid #ffb703;
+    flex-shrink:0;
+}
+
+.item-info{
+    flex:1;
+}
+
+.item-info h3{
+    color:white;
+    font-size:22px;
+    margin-bottom:8px;
+}
+
+.item-info p{
+    color:#aaa;
+    line-height:1.5;
+    font-size:14px;
+}
+
+.price{
+    margin-top:10px;
+    color:#ffb703;
+    font-size:24px;
+    font-weight:700;
+}
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .hero-content h1{
+        font-size:45px;
     }
 
-    body{
-      font-family:'Poppins',sans-serif;
-      color:white;
-      overflow-x:hidden;
-      min-height:100vh;
-
-      background:
-        radial-gradient(circle at top left,
-          rgba(255,90,31,.22),
-          transparent 25%),
-
-        radial-gradient(circle at top right,
-          rgba(255,184,0,.16),
-          transparent 30%),
-
-        radial-gradient(circle at bottom,
-          rgba(255,255,255,.03),
-          transparent 30%),
-
-        linear-gradient(to bottom,
-          #020202,
-          #0b1120,
-          #101826);
-
-      position:relative;
+    .hero-content p{
+        font-size:18px;
     }
 
-    .navbar{
-      position:sticky;
-      top:0;
-      z-index:999;
+    .book{
+        width:100%;
+        margin:0;
 
-      backdrop-filter:blur(20px);
+        display:flex;
+        flex-direction:column;
 
-      background:
-        linear-gradient(to right,
-          rgba(0,0,0,.75),
-          rgba(15,15,15,.6));
-
-      border-bottom:1px solid rgba(255,255,255,.06);
+        border-radius:0;
     }
 
-    .glass{
-      background:
-        linear-gradient(to bottom,
-          rgba(30,30,30,.78),
-          rgba(15,15,15,.75));
-
-      backdrop-filter:blur(22px);
-
-      border:1px solid rgba(255,255,255,.07);
-
-      box-shadow:
-        var(--shadow),
-        inset 0 1px 1px rgba(255,255,255,.05);
+    .page{
+        width:100%;
+        padding:30px 20px;
     }
 
-    .gradient-text{
-      background:
-        linear-gradient(to right,
-          #ffe259,
-          #ff8a00,
-          #ff3c00);
-
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
+    .page:first-child{
+        border-right:none;
+        border-bottom:2px solid rgba(255,255,255,.08);
     }
 
-    .title-glow{
-      text-shadow:
-        0 0 20px rgba(255,153,0,.35),
-        0 0 45px rgba(255,60,0,.15);
+    .page-title{
+        font-size:30px;
+        margin-bottom:30px;
     }
 
-    .hero-bg{
-      position:relative;
-      overflow:hidden;
-
-      background:
-        linear-gradient(to right,
-          rgba(0,0,0,.92),
-          rgba(0,0,0,.55)),
-
-        url('https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1800&auto=format&fit=crop');
-
-      background-size:cover;
-      background-position:center;
+    .menu-item{
+        align-items:flex-start;
     }
 
-    .btn-primary{
-      background:
-        linear-gradient(to right,
-          #ff3c00,
-          #ff7b00);
-
-      transition:.35s ease;
-
-      box-shadow:
-        0 10px 25px rgba(255,60,0,.3);
+    .menu-item img{
+        width:90px;
+        height:90px;
     }
 
-    .btn-primary:hover{
-      transform:translateY(-4px) scale(1.02);
+    .item-info h3{
+        font-size:18px;
     }
 
-    .btn-green{
-      background:
-        linear-gradient(to right,
-          #16a34a,
-          #22c55e);
+    .item-info p{
+        font-size:13px;
     }
 
-    .btn-yellow{
-      background:
-        linear-gradient(to right,
-          #ffd000,
-          #ff9900);
-
-      color:black;
+    .price{
+        font-size:20px;
     }
 
-    .product-card{
-      position:relative;
-      overflow:hidden;
-
-      border-radius:32px;
-
-      transition:.45s ease;
-
-      border:1px solid rgba(255,255,255,.07);
-
-      background:
-        linear-gradient(to bottom,
-          rgba(25,25,25,.98),
-          rgba(12,12,12,.98));
+    .logo-area h1{
+        font-size:22px;
     }
 
-    .product-card:hover{
-      transform:
-        translateY(-12px)
-        scale(1.02);
-
-      box-shadow:
-        0 20px 60px rgba(255,60,0,.22);
+    .logo-area img{
+        width:55px;
+        height:55px;
     }
 
-    .product-card img{
-      width:100%;
-      height:280px;
-      object-fit:cover;
-
-      transition:.6s ease;
+    .menu-header{
+        padding:15px;
     }
 
-    .product-card:hover img{
-      transform:scale(1.08);
-    }
+}
 
-    .promo-card{
-      position:relative;
-      overflow:hidden;
+/* =========================
+SCROLL
+========================= */
 
-      transition:.4s ease;
-    }
+::-webkit-scrollbar{
+    width:8px;
+}
 
-    .promo-card:hover{
-      transform:
-        translateY(-8px)
-        scale(1.02);
-    }
+::-webkit-scrollbar-thumb{
+    background:#ffb703;
+    border-radius:10px;
+}
 
-    .floating{
-      animation:floating 3s ease-in-out infinite;
-    }
-
-    @keyframes floating{
-
-      0%{
-        transform:translateY(0px);
-      }
-
-      50%{
-        transform:translateY(-8px);
-      }
-
-      100%{
-        transform:translateY(0px);
-      }
-
-    }
-
-    @media(max-width:768px){
-
-      .hero-bg h1{
-        font-size:52px !important;
-      }
-
-      .product-card img{
-        height:240px;
-      }
-
-    }
-
-  </style>
-
+</style>
 </head>
-
 <body>
 
-  <!-- NAVBAR -->
+<!-- =========================
+PORTADA
+========================= -->
 
-  <nav class="navbar px-6 py-4">
+<section class="hero">
 
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <div class="hero-content">
 
-      <div class="flex items-center gap-4">
+        <h1>MOCHI BURGERS</h1>
 
-        <div
-          class="w-16 h-16 rounded-3xl bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center text-4xl shadow-2xl floating">
-          🍔
-        </div>
-
-        <div>
-
-          <h1 class="text-3xl font-black gradient-text">
-            Mochis Burgers
-          </h1>
-
-          <p class="text-zinc-400 text-sm mt-1">
-            Restaurante Premium
-          </p>
-
-        </div>
-
-      </div>
-
-      <div class="hidden lg:flex items-center gap-10 text-zinc-300 font-semibold">
-
-        <a href="#" class="hover:text-orange-400 transition-all">
-          Inicio
-        </a>
-
-        <a href="#" class="hover:text-orange-400 transition-all">
-          Menú
-        </a>
-
-        <a href="#" class="hover:text-orange-400 transition-all">
-          Promociones
-        </a>
-
-        <a href="#" class="hover:text-orange-400 transition-all">
-          Contacto
-        </a>
-
-      </div>
-
-    </div>
-
-  </nav>
-
-  <!-- HERO -->
-
-  <section class="hero-bg min-h-[750px] flex items-center px-6 relative">
-
-    <div class="max-w-7xl mx-auto w-full relative z-10">
-
-      <div class="max-w-3xl">
-
-        <span
-          class="bg-red-600 px-5 py-3 rounded-full text-sm font-black inline-flex items-center gap-2 mb-6 shadow-xl">
-          🔥 COMIDA PREMIUM
-        </span>
-
-        <h1
-          class="text-6xl md:text-8xl font-black leading-tight title-glow">
-
-          EL SABOR MÁS
-
-          <span class="gradient-text">
-            BRUTAL
-          </span>
-
-        </h1>
-
-        <p class="text-zinc-300 text-xl md:text-2xl mt-7 leading-relaxed max-w-2xl">
-          Hamburguesas gigantes, pizzas artesanales, combos épicos y bebidas heladas.
+        <p>
+            Menú Premium Restaurante
         </p>
 
-        <div class="flex gap-4 mt-10 flex-wrap">
-
-          <button
-            class="btn-primary px-10 py-5 rounded-3xl text-lg font-black">
-            🍔 Ordenar Ahora
-          </button>
-
-          <button
-            class="glass px-10 py-5 rounded-3xl text-lg font-bold border border-zinc-700 hover:scale-105 transition-all">
-            ⭐ Favoritos
-          </button>
-
-        </div>
-
-      </div>
+        <button class="open-menu-btn" onclick="openMenu()">
+            VER MENÚ
+        </button>
 
     </div>
 
-  </section>
+</section>
 
-  <!-- MENÚ -->
+<!-- =========================
+MENU
+========================= -->
 
-  <div class="max-w-7xl mx-auto p-6 mt-10">
+<div class="menu-container" id="menuContainer">
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="menu-header">
 
-      <!-- PRODUCTO -->
+        <div class="logo-area">
 
-      <div class="product-card overflow-hidden">
+            <!-- TU LOGO -->
+            <img src="1.jpeg" alt="Mochi Burgers">
 
-        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1200&auto=format&fit=crop">
-
-        <div class="p-6">
-
-          <div class="flex justify-between items-center mb-4">
-
-            <h2 class="text-2xl font-black">
-              Classic Burger
-            </h2>
-
-            <span class="text-yellow-400 text-3xl font-black">
-              $8
-            </span>
-
-          </div>
-
-          <p class="text-zinc-400 leading-relaxed">
-            Carne premium, queso cheddar, vegetales frescos y salsa especial.
-          </p>
-
-          <button
-            class="mt-6 w-full btn-primary py-4 rounded-2xl text-lg font-black">
-            🍔 Ordenar
-          </button>
+            <h1>MOCHI BURGERS</h1>
 
         </div>
-
-      </div>
-
-      <!-- PRODUCTO -->
-
-      <div class="product-card overflow-hidden">
-
-        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop">
-
-        <div class="p-6">
-
-          <div class="flex justify-between items-center mb-4">
-
-            <h2 class="text-2xl font-black">
-              Pizza Pepperoni
-            </h2>
-
-            <span class="text-yellow-400 text-3xl font-black">
-              $15
-            </span>
-
-          </div>
-
-          <p class="text-zinc-400 leading-relaxed">
-            Pizza artesanal con pepperoni premium y extra queso mozzarella.
-          </p>
-
-          <button
-            class="mt-6 w-full btn-primary py-4 rounded-2xl text-lg font-black">
-            🍕 Ordenar
-          </button>
-
-        </div>
-
-      </div>
-
-      <!-- PRODUCTO -->
-
-      <div class="product-card overflow-hidden">
-
-        <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=1200&auto=format&fit=crop">
-
-        <div class="p-6">
-
-          <div class="flex justify-between items-center mb-4">
-
-            <h2 class="text-2xl font-black">
-              French Fries
-            </h2>
-
-            <span class="text-yellow-400 text-3xl font-black">
-              $4
-            </span>
-
-          </div>
-
-          <p class="text-zinc-400 leading-relaxed">
-            Papas fritas crujientes con cheddar y salsa especial.
-          </p>
-
-          <button
-            class="mt-6 w-full btn-primary py-4 rounded-2xl text-lg font-black">
-            🍟 Ordenar
-          </button>
-
-        </div>
-
-      </div>
 
     </div>
 
-  </div>
+    <button class="close-btn" onclick="closeMenu()">
+        ×
+    </button>
+
+    <div class="book">
+
+        <!-- PAGINA IZQUIERDA -->
+
+        <div class="page">
+
+            <h2 class="page-title">
+                Hamburguesas
+            </h2>
+
+            <div class="menu-item">
+
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1400&auto=format&fit=crop">
+
+                <div class="item-info">
+
+                    <h3>Classic Burger</h3>
+
+                    <p>
+                        Carne 100% res, queso cheddar,
+                        lechuga y salsa especial.
+                    </p>
+
+                    <div class="price">
+                        C$6.99
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="menu-item">
+
+                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1400&auto=format&fit=crop">
+
+                <div class="item-info">
+
+                    <h3>Double Smash</h3>
+
+                    <p>
+                        Doble carne premium con bacon
+                        crujiente y queso extra.
+                    </p>
+
+                    <div class="price">
+                        C$8.99
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="menu-item">
+
+                <img src="4.jpeg">
+
+                <div class="item-info">
+
+                    <h3>Pizza Especial</h3>
+
+                    <p>
+                        Pepperoni, queso mozzarella
+                        y salsa italiana artesanal.
+                    </p>
+
+                    <div class="price">
+                        C$10.99
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="menu-item">
+
+                <img src="5.jpeg">
+
+                <div class="item-info">
+
+                    <h3>Pollo Crispy</h3>
+
+                    <p>
+                        Pollo crujiente acompañado
+                        de papas y salsa especial.
+                    </p>
+
+                    <div class="price">
+                        C$7.50
+                    </div>
+
+                </div>
+
+            </div>
+<div class="menu-item">
+
+                <img src="6.jpeg">
+
+                <div class="item-info">
+
+                    <h3>Pollo Crispy</h3>
+
+                    <p>
+                        Pollo crujiente acompañado
+                        de papas y salsa especial.
+                    </p>
+
+                    <div class="price">
+                        C$7.50
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="menu-item">
+
+                <img src="7.jpeg">
+
+                <div class="item-info">
+
+                    <h3>Pollo Crispy</h3>
+
+                    <p>
+                        Pollo crujiente acompañado
+                        de papas y salsa especial.
+                    </p>
+
+                    <div class="price">
+                        C$7.50
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PAGINA DERECHA -->
+
+        <div class="page">
+
+            <h2 class="page-title">
+                Bebidas & Extras
+            </h2>
+
+            <div class="menu-item">
+
+                <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?q=80&w=1400&auto=format&fit=crop">
+
+                <div class="item-info">
+
+                    <h3>Milkshake Oreo</h3>
+
+                    <p>
+                        Cremoso milkshake de vainilla
+                        con galleta Oreo.
+                    </p>
+
+                    <div class="price">
+                        C$4.50
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="menu-item">
+
+                <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=1400&auto=format&fit=crop">
+
+                <div class="item-info">
+
+                    <h3>Papas Supreme</h3>
+
+                    <p>
+                        Papas fritas con queso cheddar
+                        y bacon crispy.
+                    </p>
+
+                    <div class="price">
+                        C$5.99
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="menu-item">
+
+                <img src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?q=80&w=1400&auto=format&fit=crop">
+
+                <div class="item-info">
+
+                    <h3>Hot Dog Premium</h3>
+
+                    <p>
+                        Salchicha jumbo con queso,
+                        cebolla y salsa especial.
+                    </p>
+
+                    <div class="price">
+                        C$4.99
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="menu-item">
+
+                <img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e?q=80&w=1400&auto=format&fit=crop">
+
+                <div class="item-info">
+
+                    <h3>Combo Familiar</h3>
+
+                    <p>
+                        Hamburguesas, papas y bebidas
+                        para compartir.
+                    </p>
+
+                    <div class="price">
+                        C$24.99
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function openMenu(){
+
+    document
+    .getElementById('menuContainer')
+    .classList.add('active');
+
+}
+
+function closeMenu(){
+
+    document
+    .getElementById('menuContainer')
+    .classList.remove('active');
+
+}
+
+</script>
 
 </body>
-
 </html>

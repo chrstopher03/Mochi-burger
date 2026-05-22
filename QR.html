@@ -1,0 +1,169 @@
+<!-- =========================
+QR.html
+========================= -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>QR Mochi Burgers</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,sans-serif;
+}
+
+body{
+    background:#111;
+    color:white;
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:1000px;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+}
+
+.card{
+    background:#1a1a1a;
+    border-radius:25px;
+    padding:40px;
+    text-align:center;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+
+.card h2{
+    color:#ffb703;
+    margin-bottom:25px;
+    font-size:35px;
+}
+
+.qr-box{
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    display:inline-block;
+    margin-bottom:20px;
+}
+
+.card p{
+    color:#aaa;
+    font-size:18px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:800px){
+
+    .container{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- QR MENU -->
+
+    <div class="card">
+
+        <h2>QR Menú</h2>
+
+        <div class="qr-box">
+            <div id="qrMenu"></div>
+        </div>
+
+        <p>
+            Escanea para abrir menu.html
+        </p>
+
+    </div>
+
+    <!-- QR INDEX -->
+
+    <div class="card">
+
+        <h2>QR Inicio</h2>
+
+        <div class="qr-box">
+            <div id="qrIndex"></div>
+        </div>
+
+        <p>
+            Escanea para abrir index.html
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================
+CAMBIA ESTOS LINKS
+========================= */
+
+/* MENU */
+
+const menuURL =
+"https://tupagina.com/menu.html";
+
+/* INDEX */
+
+const indexURL =
+"https://tupagina.com/index.html";
+
+/* =========================
+GENERAR QR MENU
+========================= */
+
+new QRCode(
+    document.getElementById("qrMenu"),
+    {
+        text: menuURL,
+        width:250,
+        height:250
+    }
+);
+
+/* =========================
+GENERAR QR INDEX
+========================= */
+
+new QRCode(
+    document.getElementById("qrIndex"),
+    {
+        text: indexURL,
+        width:250,
+        height:250
+    }
+);
+
+</script>
+
+</body>
+</html>
