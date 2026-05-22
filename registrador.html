@@ -23,10 +23,6 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-
-<script src="https://unpkg.com/html5-qrcode"></script>
-
 </head>
 
 <body class="p-6">
@@ -463,111 +459,6 @@
   </div>
 
 </div>
-
-
-
-<!-- PANEL CUPONES -->
-
-<div class="card p-6 mt-6">
-
-  <div class="flex justify-between items-center flex-wrap gap-4 mb-6">
-
-    <h2 class="text-3xl font-black text-yellow-400">
-
-      Sistema VIP
-
-    </h2>
-
-    <div class="flex flex-wrap gap-3">
-
-      <button
-        onclick="generateVipCoupon()"
-        class="bg-yellow-500 hover:bg-yellow-600 px-5 py-3 rounded-2xl font-black text-black">
-
-        🎟️ Generar Cupón
-
-      </button>
-
-      <button
-        onclick="openScanner()"
-        class="bg-cyan-500 hover:bg-cyan-600 px-5 py-3 rounded-2xl font-black">
-
-        📷 Escanear
-
-      </button>
-
-    </div>
-
-  </div>
-
-  <!-- INPUT CUPON -->
-
-  <div class="flex flex-col md:flex-row gap-4 mb-6">
-
-    <input
-      type="text"
-      id="couponInput"
-      placeholder="Código del cupón"
-      class="flex-1 bg-zinc-900 border border-zinc-700 rounded-2xl p-4">
-
-    <button
-      onclick="applyCoupon()"
-      class="bg-green-500 hover:bg-green-600 px-6 rounded-2xl font-black">
-
-      Aplicar Cupón
-
-    </button>
-
-  </div>
-
-  <!-- CUPONES -->
-
-  <div
-    id="couponList"
-    class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-  </div>
-
-</div>
-
-
-<!-- MODAL SCANNER -->
-
-<div
-id="scannerModal"
-class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[999999] p-4">
-
-  <div
-  class="bg-zinc-900 border border-zinc-700 rounded-3xl p-5 w-full max-w-md">
-
-    <div class="flex justify-between items-center mb-4">
-
-      <h2 class="text-2xl font-black text-cyan-400">
-
-        Escanear Cupón
-
-      </h2>
-
-      <button
-      onclick="closeScanner()"
-      class="text-3xl text-white">
-
-        ×
-
-      </button>
-
-    </div>
-
-    <!-- CAMARA -->
-
-    <div
-    id="reader"
-    class="rounded-2xl overflow-hidden">
-    </div>
-
-  </div>
-
-</div>
-
 
 <!-- MODAL INVENTARIO -->
 
