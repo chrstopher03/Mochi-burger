@@ -1957,10 +1957,24 @@ function applyCoupon(){
     JSON.stringify(vipCoupons)
   );
 
+  let totalText =
+  document.getElementById('invoiceTotal').innerText;
+
+  let total =
+  parseFloat(totalText.replace('C$',''));
+
+  const discount =
+  total * (coupon.discount / 100);
+
+  total -= discount;
+
+  document.getElementById('invoiceTotal').innerText =
+  'C$' + total.toFixed(2);
+
   Swal.fire({
 
     icon:'success',
-    title:'Cupón aplicado',
+    title:'Descuento aplicado',
     text:coupon.discount + '% OFF',
     background:'#111',
     color:'#fff'
@@ -2041,5 +2055,7 @@ function closeScanner(){
 
 }
 
+
+// INICIAR
 
 showCoupons();
